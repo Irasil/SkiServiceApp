@@ -3,10 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SkiServiceApp"
+        xmlns:local="clr-namespace:SkiServiceApp" xmlns:modelview="clr-namespace:SkiServiceApp.ModelView" d:DataContext="{d:DesignInstance Type=modelview:MainWindowModelView}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>            
+        </Grid.RowDefinitions>
+        <ToolBarTray  Grid.Row="0" VerticalAlignment="Top">
+            <ToolBar Band="0"
+                     BandIndex="1" HorizontalAlignment="Center">
+                <Button x:Name="aktu" Content="Aktualisieren" HorizontalAlignment="Center" Padding="15" Command="{Binding CmdAktu}" ></Button>
+                <Button x:Name="neu" Content="Neu" Padding="15" Command="{Binding CmdNeu}"></Button>
+                <Button x:Name="prio" Content="Priorität" Padding="15"></Button>
+                <Button x:Name="such" Content="Suche" Padding="15"></Button>
+                <Separator></Separator>
+                <Button x:Name="ander" Content="Ändern" Padding="15"></Button>
+                <Button x:Name="lösch" Content="Löschen" Padding="15"></Button>
+            </ToolBar>
+        </ToolBarTray>
+        <ToolBar Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">            
+                <Button x:Name="anmelden" Content="Anmelden" Padding="15"></Button>            
+        </ToolBar>
+
+        <ContentControl x:Name="con" Grid.Row="1" Margin="10">
+            <Border  BorderBrush="Black" BorderThickness="1">
+                <ContentControl x:Name="content1" Content="{Binding Content}"></ContentControl>
+            </Border>
+        </ContentControl>
 
     </Grid>
 </Window>
