@@ -10,14 +10,19 @@
         <DataGrid x:Name="dgAdressen"
 					  ItemsSource="{Binding Registrationens}"
 					  IsReadOnly="True"
+                      SelectedItem="{Binding reg}"
 					  AutoGenerateColumns="False"
 					  Grid.Row="0"
 					  Grid.Column="0"
 					  Margin="5">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CmdSelect}"/>
+            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id"
+                                    
 										Binding="{Binding Id}"
-										Width="100" />
+										Width="30" />
                 <DataGridTextColumn Header="Name"
 										Binding="{Binding Name}"
 										Width="*" />
@@ -26,7 +31,7 @@
 										Width="*" />
                 <DataGridTextColumn Header="Phone"
 										Binding="{Binding Phone}"
-										Width="*" />
+										Width="*" />            
                 <DataGridTextColumn Header="Erstell Datum"
 										Binding="{Binding Created_Date}"
 										Width="*" />

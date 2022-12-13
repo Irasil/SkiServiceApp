@@ -3,10 +3,81 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SkiServiceApp.Views"
+             xmlns:local="clr-namespace:SkiServiceApp.Views" xmlns:modelview="clr-namespace:SkiServiceApp.ModelView" d:DataContext="{d:DesignInstance Type=modelview:MainWindowModelView}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="355" d:DesignWidth="778">
     <Grid>
-        <TextBlock Text="Neu" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>    
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2" VerticalAlignment="Center" >
+                <Label Content="Name"  FontSize="20" VerticalAlignment="Center" Width="80" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
+                <TextBox  Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" Text="{Binding reg.Name}"></TextBox>
+            </DockPanel>
+           
+            <DockPanel Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center" >
+                <Label Content="Tel:"  FontSize="20" VerticalAlignment="Center" Width="80" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
+                <TextBox  Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" Text="{Binding reg.Phone}" ></TextBox>
+            </DockPanel>
+            <DockPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" >
+                <Label Content="E-Mail"  FontSize="20" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
+                <TextBox  Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" Text="{Binding reg.Email}"></TextBox>
+            </DockPanel>
+            <DockPanel Grid.Row="2">
+                <Label Content="Service"  FontSize="20" VerticalAlignment="Center" Width="80" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
+                <ComboBox VerticalAlignment="Center" Width="170" HorizontalAlignment="Left" Height="35" FontSize="20" Text="{Binding reg.Service, Mode=TwoWay}">
+                    <ComboBoxItem IsSelected="True">Kleiner Service</ComboBoxItem>
+                    <ComboBoxItem>Grosser Service</ComboBoxItem>
+                    <ComboBoxItem>Rennski-Service</ComboBoxItem>
+                    <ComboBoxItem>Bindung montieren und einstellen</ComboBoxItem>
+                    <ComboBoxItem>Fell zuschneiden</ComboBoxItem>
+                    <ComboBoxItem>Heisswachsen</ComboBoxItem>
+                </ComboBox>
+            </DockPanel>
+            <DockPanel Grid.Row="2" Grid.Column="1">
+                <Label Content="Priorität"  FontSize="20" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
+                <ComboBox VerticalAlignment="Center" Width="170" HorizontalAlignment="Left" Height="35" FontSize="20" Text="{Binding reg.Priority , Mode=TwoWay}">
+                    <ComboBoxItem IsSelected="True">Express</ComboBoxItem>
+                    <ComboBoxItem>Standart</ComboBoxItem>
+                    <ComboBoxItem>Tief</ComboBoxItem>
+                </ComboBox>
+            </DockPanel>
+
+        </Grid>
+        
+        <Label Grid.Row="0" Content="Bestellung" FontSize="32" Margin="20,0,0,0"></Label>
+        
+        
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button x:Name="btnSpeichern"
+                    Content="Speichern"
+                    Height="25"
+                    Width="70"
+                    Margin="0,0,0,20"
+                    Command="{Binding CmdNeuEr}"
+                    ></Button>            
+            <Button x:Name="btnAbbrechen"
+                    Content="Abbrechen"
+                    Height="25"
+                    Width="70"
+                    Margin="40,0,10,20">
+
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

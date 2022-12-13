@@ -11,33 +11,93 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SkiServiceApp.ModelView
 {
     public class MainWindowModelView : ViewModelBase
     {
         public MainWindow main;
-        
+
         public RelayCommand CmdAktu { get; set; }
         public RelayCommand CmdNeu { get; set; }
+        public RelayCommand CmdNeuEr { get; set; }
+        public RelayCommand CmdSelect { get; set; }
+        public Registrationen selectedReg = new Registrationen();
+        public Registrationen regi = new Registrationen();
 
-        public Task<List<Registrationen>> lol { get; set; }
+
+        public Task<List<Registrationen>> getTask { get; set; }
         public List<Registrationen> registrations { get; set; }
         public ObservableCollection<Registrationen> Registrationens { get; set; }
-        
+
         public MainWindowModelView()
         {
-           
+            regi.Service = "Kleiner Service";
+            regi.Priority = "Express";
             string hey = "hexy";
-            
-            
+
+
 
             Registrationens = new ObservableCollection<Registrationen>();
-            
 
-             
-            CmdAktu = new RelayCommand(param => Aktu() );
+
+            
+            CmdAktu = new RelayCommand(param => Aktu());
             CmdNeu = new RelayCommand(param => Neu());
+            CmdNeuEr = new RelayCommand(param => NeuEr());
+            CmdSelect = new RelayCommand(param => Select(regi));
+        }
+
+        private void NeuEr()
+        {
+            string lol = string.Empty;
+            reg.Created_Date = DateTime.Now;
+            reg.Status = "Offen";
+
+            if (reg.Priority == "Tief")
+            {
+                reg.Pickup_Date = reg.Created_Date.AddDays(12);
+            }
+            else if (reg.Priority == "Standart")
+            {
+                reg.Pickup_Date = reg.Created_Date.AddDays(7);
+            }
+            else if (reg.Priority == "Express")
+            {
+                reg.Pickup_Date = reg.Created_Date.AddDays(5);
+            }
+            Database.Database.Post(reg);
+            ErfolgreichView erfolgreich = new ErfolgreichView();
+            Content = erfolgreich;
+
+        }
+
+        public Registrationen SelectedReg
+        {
+            get { return selectedReg; }
+            set
+            {
+                if (value != selectedReg)
+                {
+                    SetProperty<Registrationen>(ref selectedReg, value);
+                    regi = value;
+                }
+            }
+        }
+
+        public Registrationen reg
+        {
+            get { return regi; }
+            set
+            {
+                content = value;
+                SetProperty<Registrationen>(ref regi, value);
+                OnPropertyChanged(nameof(regi));
+            }
         }
 
         private object content;
@@ -47,27 +107,23 @@ namespace SkiServiceApp.ModelView
             set
             {
                 content = value;
-                OnPropertyChanged (nameof( Content));
+                OnPropertyChanged(nameof(Content));
             }
         }
 
-        private object content1;
-        public object Content1
+        private void Select(Registrationen reg)
         {
-            get { return content1; }
-            set
-            {
-                content1 = value;
-                OnPropertyChanged(nameof(Content1));
-            }
+            NeuView neu = new NeuView();
+            Content = neu;
         }
+
+
 
         public async void Aktu()
         {
-            await (lol = Database.Database.Get());
-            registrations = lol.Result.ToList();
+            await (getTask = Database.Database.Get());
+            registrations = getTask.Result.ToList();
             AktuView aktu = new AktuView();
-            //main = new MainWindow();
             Registrationens = new ObservableCollection<Registrationen>(registrations);
             Content = aktu;
             

@@ -22,23 +22,21 @@ namespace SkiServiceApp.Database
         }
 
         public static async Task<List<Registrationen>> Get()
-        {
-            //HttpClient get = new HttpClient();
-            //get.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //string text = await get.GetStringAsync("https://localhost:7153/Registration");
-
-            //string hey = text.Result.ToString();
-            ////Keywordlist gag = JsonConvert.DeserializeObject<Keywordlist>(text);
-
-
-            //return text;
+        {            
             using (var client = new HttpClient())
             {
                 var content = await client.GetStringAsync("https://localhost:7153/Registration");
                 return JsonConvert.DeserializeObject<List<Registrationen>>(content);
             }
+        }
 
-
+        public static async void Post(Registrationen reg)
+        {
+            using (var client = new HttpClient())
+            {
+                var respons = await client.PostAsJsonAsync("https://localhost:7153/Registration", reg);
+                string resultContent = await respons.Content.ReadAsStringAsync();
+            }
         }
     }
 }
