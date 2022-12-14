@@ -16,11 +16,10 @@
                      BandIndex="1" HorizontalAlignment="Center">
                 <Button x:Name="aktu" Content="Aktualisieren" HorizontalAlignment="Center" Padding="15" Command="{Binding CmdAktu}" ></Button>
                 <Button x:Name="neu" Content="Neu" Padding="15" Command="{Binding CmdNeu}"></Button>
-                <Button x:Name="prio" Content="Priorität" Padding="15"></Button>
                 <Button x:Name="such" Content="Suche" Padding="15"></Button>
                 <Separator></Separator>
-                <Button x:Name="ander" Content="Ändern" Padding="15"></Button>
-                <Button x:Name="lösch" Content="Löschen" Padding="15"></Button>
+                <Button x:Name="ander" Content="Ändern" Padding="15" Command="{Binding CmdAendern}"></Button>
+                <Button x:Name="lösch" Content="Löschen" Padding="15" Command="{Binding CmdLoeschen}"></Button>
             </ToolBar>
         </ToolBarTray>
         <ToolBar Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">            

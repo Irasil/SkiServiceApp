@@ -25,7 +25,10 @@ namespace SkiServiceApp.ModelView
         public RelayCommand CmdAktu { get; set; }
         public RelayCommand CmdNeu { get; set; }
         public RelayCommand CmdNeuEr { get; set; }
-        public RelayCommand CmdSelect { get; set; }
+        public RelayCommand CmdAendern { get; set; }
+        public RelayCommand CmdLoeschen { get; set; }
+        public RelayCommand CmdAendernSpeicher { get; set; }
+        public RelayCommand CmdLoeschenSpeicher { get; set; }
         public Registrationen selectedReg = new Registrationen();
         public Registrationen regi = new Registrationen();
 
@@ -38,10 +41,6 @@ namespace SkiServiceApp.ModelView
         {
             regi.Service = "Kleiner Service";
             regi.Priority = "Express";
-            string hey = "hexy";
-
-
-
             Registrationens = new ObservableCollection<Registrationen>();
 
 
@@ -49,7 +48,17 @@ namespace SkiServiceApp.ModelView
             CmdAktu = new RelayCommand(param => Aktu());
             CmdNeu = new RelayCommand(param => Neu());
             CmdNeuEr = new RelayCommand(param => NeuEr());
-            CmdSelect = new RelayCommand(param => Select(regi));
+            CmdAendern = new RelayCommand(param => Aendern(regi));
+            CmdLoeschen = new RelayCommand(param => Loeschen(regi));
+            CmdAendernSpeicher = new RelayCommand(param => AendernSpeicher(regi));
+            CmdLoeschenSpeicher = new RelayCommand(param => LoeschenSpeicher());
+        }
+
+        private async void LoeschenSpeicher()
+        {
+            Database.Database.Delete(regi);
+            await Task.Delay(100);
+            Aktu();
         }
 
         private void NeuEr()
@@ -75,19 +84,7 @@ namespace SkiServiceApp.ModelView
             Content = erfolgreich;
 
         }
-
-        public Registrationen SelectedReg
-        {
-            get { return selectedReg; }
-            set
-            {
-                if (value != selectedReg)
-                {
-                    SetProperty<Registrationen>(ref selectedReg, value);
-                    regi = value;
-                }
-            }
-        }
+       
 
         public Registrationen reg
         {
@@ -111,16 +108,35 @@ namespace SkiServiceApp.ModelView
             }
         }
 
-        private void Select(Registrationen reg)
+        private void Aendern(Registrationen reg)
         {
-            NeuView neu = new NeuView();
-            Content = neu;
+            if (regi.Name != null) 
+            {
+                AendernView neu = new AendernView();
+                Content = neu; 
+            }
+            else
+            {
+                Aktu();
+            }            
         }
 
-
+        private void Loeschen(Registrationen reg)
+        {
+            if (regi.Name != null)
+            {
+                LoeschenView neu = new LoeschenView();
+                Content = neu;
+            }
+            else
+            {
+                Aktu();
+            }
+        }
 
         public async void Aktu()
         {
+            regi = new Registrationen();
             await (getTask = Database.Database.Get());
             registrations = getTask.Result.ToList();
             AktuView aktu = new AktuView();
@@ -131,8 +147,18 @@ namespace SkiServiceApp.ModelView
 
         public void Neu()
         {
+            regi = new Registrationen();
+            regi.Service = "Kleiner Service";
+            regi.Priority = "Express";
             NeuView neu = new NeuView();
             Content = neu;
+        }
+
+        public async void AendernSpeicher(Registrationen reg)
+        {
+            Database.Database.Put(reg);
+            await Task.Delay(100);
+            Aktu();
         }
     }
 }

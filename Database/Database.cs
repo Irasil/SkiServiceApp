@@ -10,22 +10,26 @@ using System.Security.Policy;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace SkiServiceApp.Database
 {
     class Database
     {
-        
+        static string _connectionString = Settings.Default.REST_URL;
+
+
         public Database() 
         {
-            
+           
         }
 
         public static async Task<List<Registrationen>> Get()
         {            
             using (var client = new HttpClient())
             {
-                var content = await client.GetStringAsync("https://localhost:7153/Registration");
+                client.Timeout = TimeSpan.FromSeconds(900);
+                var content = await client.GetStringAsync(_connectionString);
                 return JsonConvert.DeserializeObject<List<Registrationen>>(content);
             }
         }
@@ -34,8 +38,27 @@ namespace SkiServiceApp.Database
         {
             using (var client = new HttpClient())
             {
-                var respons = await client.PostAsJsonAsync("https://localhost:7153/Registration", reg);
+                client.Timeout = TimeSpan.FromSeconds(900);
+                var respons = await client.PostAsJsonAsync(_connectionString, reg);
                 string resultContent = await respons.Content.ReadAsStringAsync();
+            }
+        }
+
+        public static async void Put(Registrationen reg)
+        {
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(900);
+                var respons = await client.PutAsJsonAsync($"{_connectionString}/{reg.Id}" ,reg);
+            }
+        }
+
+        public static async void Delete(Registrationen reg)
+        {
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(900);
+                var respons = await client.DeleteAsync($"{_connectionString}/{reg.Id}");
             }
         }
     }

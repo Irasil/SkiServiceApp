@@ -16,7 +16,7 @@
 					  Grid.Column="0"
 					  Margin="5">
             <DataGrid.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CmdSelect}"/>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CmdAendern}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id"

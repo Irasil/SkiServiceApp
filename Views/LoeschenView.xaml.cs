@@ -1,5 +1,4 @@
-﻿using SkiServiceApp.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,20 +16,13 @@ using System.Windows.Shapes;
 namespace SkiServiceApp.Views
 {
     /// <summary>
-    /// Interaction logic for AktuView.xaml
+    /// Interaction logic for LoeschenView.xaml
     /// </summary>
-    public partial class AktuView : UserControl
+    public partial class LoeschenView : UserControl
     {
-        private Registrationen _registration;
-        public AktuView()
+        public LoeschenView()
         {
             InitializeComponent();
-            
-        }
-
-        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
         }
     }
 }
