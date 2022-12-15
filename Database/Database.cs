@@ -105,4 +105,9 @@ namespace SkiServiceApp.Database
         public string userName { get; set; }
         public string token { get; set; }
     }
+    public class Anmelden 
+    {
+        public string status { get; set; }
+        
+    }
 }

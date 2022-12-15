@@ -1,8 +1,12 @@
-﻿using SkiServiceApp.ModelView;
+﻿using SkiServiceApp.Database;
+using SkiServiceApp.Model;
+using SkiServiceApp.ModelView;
 using SkiServiceApp.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,10 +27,14 @@ namespace SkiServiceApp
     public partial class MainWindow : Window
     {
         MainWindowModelView modelView = new MainWindowModelView();
+        
         public MainWindow()
         {
             InitializeComponent();
             DataContext = modelView;
         }
-    }
+
+       
+
+    }  
 }

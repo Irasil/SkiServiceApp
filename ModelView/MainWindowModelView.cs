@@ -31,17 +31,20 @@ namespace SkiServiceApp.ModelView
         public RelayCommand CmdAnmeldenSenden { get; set; }
         public RelayCommand CmdAendernSpeicher { get; set; }
         public RelayCommand CmdLoeschenSpeicher { get; set; }
-        //public Registrationen selectedReg = new Registrationen();
+        public RelayCommand CmdSuche { get; set; }
+
+
         public Registrationen _regi = new Registrationen();
-        public User _user = new User();
+        public User _user  = new User();
         public LoginView login { get; set; }
+        public Anmelden _anmelden  = new Anmelden();
 
 
 
 
 
         public Task<List<Registrationen>> getTask { get; set; }
-        public List<Registrationen> registrations { get; set; }
+        public List<Registrationen> registrations { get; set; } = new List<Registrationen>();
         public ObservableCollection<Registrationen> Registrationens { get; set; }
 
         public MainWindowModelView()
@@ -49,6 +52,7 @@ namespace SkiServiceApp.ModelView
             
             _regi.Service = "Kleiner Service";
             _regi.Priority = "Express";
+            Anmeld.status = "Anmelden";
             Registrationens = new ObservableCollection<Registrationen>();
             
             CmdAktu = new RelayCommand(param => Aktu());
@@ -60,6 +64,7 @@ namespace SkiServiceApp.ModelView
             CmdLoeschenSpeicher = new RelayCommand(param => LoeschenSpeicher());
             CmdAnmelden = new RelayCommand(param => Anmelden());
             CmdAnmeldenSenden = new RelayCommand(param => AnmeldenSenden());
+            CmdSuche = new RelayCommand(param => Suche());
 
         }
 
@@ -68,7 +73,7 @@ namespace SkiServiceApp.ModelView
             get { return _regi; }
             set
             {
-                content = value;
+                _regi = value;
                 SetProperty<Registrationen>(ref _regi, value);
                 OnPropertyChanged(nameof(_regi));
             }
@@ -79,9 +84,20 @@ namespace SkiServiceApp.ModelView
             get { return _user; }
             set
             {
-                content = value;
+                _user = value;
                 SetProperty<User>(ref _user, value);
-                OnPropertyChanged(nameof(_user));
+                OnPropertyChanged(nameof(User));
+            }
+        }
+
+        public Anmelden Anmeld
+        {
+            get { return _anmelden; }
+            set
+            {
+                _anmelden = value;
+                SetProperty<Anmelden>(ref _anmelden, value);
+                OnPropertyChanged(nameof(_anmelden));
             }
         }
 
@@ -101,6 +117,7 @@ namespace SkiServiceApp.ModelView
             _regi = new Registrationen();
             await (getTask = Database.Database.Get());
             registrations = getTask.Result.ToList();
+            
             AktuView aktu = new AktuView();
             Registrationens = new ObservableCollection<Registrationen>(registrations);
             Content = aktu;
@@ -182,6 +199,7 @@ namespace SkiServiceApp.ModelView
 
         private async void Anmelden()
         {
+            User.Name = string.Empty;
             login = new LoginView();
             Content = login;
         }
@@ -199,6 +217,9 @@ namespace SkiServiceApp.ModelView
                 {
                     ErfolgreichView erfolgreich = new ErfolgreichView();
                     Content = erfolgreich;
+                    
+                    _anmelden.status = "abmelden";
+                    
                 }
                 else
                 {
@@ -209,9 +230,34 @@ namespace SkiServiceApp.ModelView
             {
                 Aktu();
             }
-            
-            
+            User.Name = string.Empty;
+        }
 
+        private async void Suche()
+        {
+            _regi = new Registrationen();
+            await (getTask = Database.Database.Get());
+            registrations = getTask.Result.ToList();
+            //await Task.Delay(100);
+            List<Registrationen> Registries = new List<Registrationen>();
+            Registries = registrations.ToList();
+            
+            if(_user.Name != null) {
+                Registries.Clear(); 
+            foreach (Registrationen anim in registrations)
+            {
+
+                if (anim.Name.Contains(_user.Name) || anim.Email.Contains(_user.Name) || anim.Service.Contains(_user.Name) || anim.Priority.Contains(_user.Name) || anim.Status.Contains(_user.Name))
+                {
+                    Registries.Add(anim);
+                }
+            }
+            }
+            AktuView aktu = new AktuView();
+            Registrationens = new ObservableCollection<Registrationen>(Registries);
+            Content = aktu;
+            //ErfolgreichView erfolgreich = new ErfolgreichView();
+            //Content = erfolgreich;
         }
     }
 }

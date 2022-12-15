@@ -11,19 +11,23 @@
             <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>            
         </Grid.RowDefinitions>
-        <ToolBarTray  Grid.Row="0" VerticalAlignment="Top">
-            <ToolBar Band="0"
+        <ToolBarTray   Grid.Row="0" VerticalAlignment="Top">
+            <ToolBar  Band="0"
                      BandIndex="1" HorizontalAlignment="Center">
                 <Button x:Name="aktu" Content="Aktualisieren" HorizontalAlignment="Center" Padding="15" Command="{Binding CmdAktu}" ></Button>
                 <Button x:Name="neu" Content="Neu" Padding="15" Command="{Binding CmdNeu}"></Button>
-                <Button x:Name="such" Content="Suche" Padding="15"></Button>
+                
                 <Separator></Separator>
                 <Button x:Name="ander" Content="Ändern" Padding="15" Command="{Binding CmdAendern}"></Button>
                 <Button x:Name="lösch" Content="Löschen" Padding="15" Command="{Binding CmdLoeschen}"></Button>
             </ToolBar>
         </ToolBarTray>
+        
         <ToolBar Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">
-            <Button x:Name="anmelden" Content="Anmelden" Padding="15" Command="{Binding CmdAnmelden}"></Button>            
+            <TextBox x:Name="suche" Padding="5" Width="150" BorderBrush="Black" Text="{Binding User.Name, Mode=TwoWay}"></TextBox>
+            <Button x:Name="such" Content="Suche" Padding="15,15,35,15" Command="{Binding CmdSuche}"></Button>
+            <Separator></Separator>
+            <Button x:Name="anmelden" Content="{Binding Anmeld.status}" Padding="15" Command="{Binding CmdAnmelden}"></Button>            
         </ToolBar>
         
             <ContentControl x:Name="con" Grid.Row="1" Margin="10">
