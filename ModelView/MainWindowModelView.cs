@@ -27,10 +27,17 @@ namespace SkiServiceApp.ModelView
         public RelayCommand CmdNeuEr { get; set; }
         public RelayCommand CmdAendern { get; set; }
         public RelayCommand CmdLoeschen { get; set; }
+        public RelayCommand CmdAnmelden { get; set; }
+        public RelayCommand CmdAnmeldenSenden { get; set; }
         public RelayCommand CmdAendernSpeicher { get; set; }
         public RelayCommand CmdLoeschenSpeicher { get; set; }
-        public Registrationen selectedReg = new Registrationen();
-        public Registrationen regi = new Registrationen();
+        //public Registrationen selectedReg = new Registrationen();
+        public Registrationen _regi = new Registrationen();
+        public User _user = new User();
+        public LoginView login { get; set; }
+
+
+
 
 
         public Task<List<Registrationen>> getTask { get; set; }
@@ -39,26 +46,74 @@ namespace SkiServiceApp.ModelView
 
         public MainWindowModelView()
         {
-            regi.Service = "Kleiner Service";
-            regi.Priority = "Express";
+            
+            _regi.Service = "Kleiner Service";
+            _regi.Priority = "Express";
             Registrationens = new ObservableCollection<Registrationen>();
-
-
             
             CmdAktu = new RelayCommand(param => Aktu());
             CmdNeu = new RelayCommand(param => Neu());
             CmdNeuEr = new RelayCommand(param => NeuEr());
-            CmdAendern = new RelayCommand(param => Aendern(regi));
-            CmdLoeschen = new RelayCommand(param => Loeschen(regi));
-            CmdAendernSpeicher = new RelayCommand(param => AendernSpeicher(regi));
+            CmdAendern = new RelayCommand(param => Aendern(_regi));
+            CmdLoeschen = new RelayCommand(param => Loeschen(_regi));
+            CmdAendernSpeicher = new RelayCommand(param => AendernSpeicher(_regi));
             CmdLoeschenSpeicher = new RelayCommand(param => LoeschenSpeicher());
+            CmdAnmelden = new RelayCommand(param => Anmelden());
+            CmdAnmeldenSenden = new RelayCommand(param => AnmeldenSenden());
+
         }
 
-        private async void LoeschenSpeicher()
+    public Registrationen reg
         {
-            Database.Database.Delete(regi);
-            await Task.Delay(100);
-            Aktu();
+            get { return _regi; }
+            set
+            {
+                content = value;
+                SetProperty<Registrationen>(ref _regi, value);
+                OnPropertyChanged(nameof(_regi));
+            }
+        }
+
+        public User User
+        {
+            get { return _user; }
+            set
+            {
+                content = value;
+                SetProperty<User>(ref _user, value);
+                OnPropertyChanged(nameof(_user));
+            }
+        }
+
+        private object content;
+        public object Content
+        {
+            get { return content; }
+            set
+            {
+                content = value;
+                OnPropertyChanged(nameof(Content));
+            }
+        }
+
+        public async void Aktu()
+        {
+            _regi = new Registrationen();
+            await (getTask = Database.Database.Get());
+            registrations = getTask.Result.ToList();
+            AktuView aktu = new AktuView();
+            Registrationens = new ObservableCollection<Registrationen>(registrations);
+            Content = aktu;
+            
+        }
+
+        public void Neu()
+        {
+            _regi = new Registrationen();
+            _regi.Service = "Kleiner Service";
+            _regi.Priority = "Express";
+            NeuView neu = new NeuView();
+            Content = neu;
         }
 
         private void NeuEr()
@@ -84,46 +139,23 @@ namespace SkiServiceApp.ModelView
             Content = erfolgreich;
 
         }
-       
-
-        public Registrationen reg
-        {
-            get { return regi; }
-            set
-            {
-                content = value;
-                SetProperty<Registrationen>(ref regi, value);
-                OnPropertyChanged(nameof(regi));
-            }
-        }
-
-        private object content;
-        public object Content
-        {
-            get { return content; }
-            set
-            {
-                content = value;
-                OnPropertyChanged(nameof(Content));
-            }
-        }
 
         private void Aendern(Registrationen reg)
         {
-            if (regi.Name != null) 
+            if (_regi.Name != null)
             {
                 AendernView neu = new AendernView();
-                Content = neu; 
+                Content = neu;
             }
             else
             {
                 Aktu();
-            }            
+            }
         }
 
         private void Loeschen(Registrationen reg)
         {
-            if (regi.Name != null)
+            if (_regi.Name != null)
             {
                 LoeschenView neu = new LoeschenView();
                 Content = neu;
@@ -134,31 +166,53 @@ namespace SkiServiceApp.ModelView
             }
         }
 
-        public async void Aktu()
-        {
-            regi = new Registrationen();
-            await (getTask = Database.Database.Get());
-            registrations = getTask.Result.ToList();
-            AktuView aktu = new AktuView();
-            Registrationens = new ObservableCollection<Registrationen>(registrations);
-            Content = aktu;
-            
-        }
-
-        public void Neu()
-        {
-            regi = new Registrationen();
-            regi.Service = "Kleiner Service";
-            regi.Priority = "Express";
-            NeuView neu = new NeuView();
-            Content = neu;
-        }
-
         public async void AendernSpeicher(Registrationen reg)
         {
             Database.Database.Put(reg);
             await Task.Delay(100);
             Aktu();
         }
+
+        private async void LoeschenSpeicher()
+        {
+            Database.Database.Delete(_regi);
+            await Task.Delay(100);
+            Aktu();
+        }
+
+        private async void Anmelden()
+        {
+            login = new LoginView();
+            Content = login;
+        }
+       
+        public async void AnmeldenSenden()
+        {
+            
+            _user.password = login.pwb.Password;
+            Task<bool> suc;
+            await (suc = Database.Database.Login(_user));
+            if (suc != null)
+            {
+                bool success = suc.Result;
+                if(success)
+                {
+                    ErfolgreichView erfolgreich = new ErfolgreichView();
+                    Content = erfolgreich;
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+                Aktu();
+            }
+            
+            
+
+        }
     }
 }
+

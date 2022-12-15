@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SkiServiceApp" xmlns:modelview="clr-namespace:SkiServiceApp.ModelView" d:DataContext="{d:DesignInstance Type=modelview:MainWindowModelView}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="675" Width="1200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"></RowDefinition>
@@ -22,15 +22,18 @@
                 <Button x:Name="lösch" Content="Löschen" Padding="15" Command="{Binding CmdLoeschen}"></Button>
             </ToolBar>
         </ToolBarTray>
-        <ToolBar Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">            
-                <Button x:Name="anmelden" Content="Anmelden" Padding="15"></Button>            
+        <ToolBar Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Button x:Name="anmelden" Content="Anmelden" Padding="15" Command="{Binding CmdAnmelden}"></Button>            
         </ToolBar>
-
-        <ContentControl x:Name="con" Grid.Row="1" Margin="10">
-            <Border  BorderBrush="Black" BorderThickness="1">
+        
+            <ContentControl x:Name="con" Grid.Row="1" Margin="10">
+            <ScrollViewer>
+                <Border  BorderBrush="Black" BorderThickness="1">
                 <ContentControl x:Name="content1" Content="{Binding Content}"></ContentControl>
             </Border>
+        </ScrollViewer>
         </ContentControl>
+        
 
     </Grid>
 </Window>

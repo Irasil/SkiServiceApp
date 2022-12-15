@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SkiServiceApp.Model;
+using SkiServiceApp.ModelView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace SkiServiceApp.Database
     class Database
     {
         static string _connectionString = Settings.Default.REST_URL;
+        
 
 
         public Database() 
@@ -48,8 +50,9 @@ namespace SkiServiceApp.Database
         {
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Settings.Default.JWT);
                 client.Timeout = TimeSpan.FromSeconds(900);
-                var respons = await client.PutAsJsonAsync($"{_connectionString}/{reg.Id}" ,reg);
+                var respons = await client.PutAsJsonAsync($"{_connectionString}{reg.Id}" ,reg);
             }
         }
 
@@ -57,9 +60,49 @@ namespace SkiServiceApp.Database
         {
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Settings.Default.JWT);
                 client.Timeout = TimeSpan.FromSeconds(900);
-                var respons = await client.DeleteAsync($"{_connectionString}/{reg.Id}");
+                var respons = await client.DeleteAsync($"{_connectionString}{reg.Id}");
             }
         }
+
+        public static async Task<bool> Login(User user)
+        {
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(900);
+                var respons = await client.PostAsJsonAsync($"https://localhost:7153/Mitarbeiter", user);
+                string resultContent = await respons.Content.ReadAsStringAsync();
+                if(respons.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(resultContent);               
+                    Settings.Default.JWT = myDeserializedClass.value.token;
+                    Settings.Default.Save();
+                    return true;
+                }
+                else
+                {
+                   return false;
+                }
+
+
+                
+
+            }
+        }
+
+    }
+    public class Root
+    {
+        public object contentType { get; set; }
+        public object serializerSettings { get; set; }
+        public object statusCode { get; set; }
+        public Value value { get; set; }
+    }
+
+    public class Value
+    {
+        public string userName { get; set; }
+        public string token { get; set; }
     }
 }
