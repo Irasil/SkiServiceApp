@@ -26,16 +26,16 @@
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2" VerticalAlignment="Center" >
             <Label Content="Name"  FontSize="20" VerticalAlignment="Center" Width="80" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
-            <TextBox  Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" Text="{Binding reg.Name}"></TextBox>
+                <TextBox  Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" Text="{Binding reg.Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </DockPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center" >
             <Label Content="Tel:"  FontSize="20" VerticalAlignment="Center" Width="80" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
-            <TextBox  Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" Text="{Binding reg.Phone}" ></TextBox>
+                <TextBox  Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" Text="{Binding reg.Phone, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
         </DockPanel>
         <DockPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" >
             <Label Content="E-Mail"  FontSize="20" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
-            <TextBox  Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" Text="{Binding reg.Email}"></TextBox>
+            <TextBox  Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" Text="{Binding reg.Email, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </DockPanel>
        
 
@@ -44,7 +44,7 @@
     <Label Grid.Row="0" Content="Bearbeiten" FontSize="32" Margin="20,0,0,0"></Label>
         <DockPanel Grid.Row="2" VerticalAlignment="Top" Margin=" 0,20,0,0">
             <Label Content="Service"  FontSize="20" VerticalAlignment="Center" Width="80" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
-            <ComboBox VerticalAlignment="Center" Width="150" HorizontalAlignment="Left" Height="35" FontSize="20" Text="{Binding reg.Service, Mode=TwoWay}">
+            <ComboBox VerticalAlignment="Center" Width="150" HorizontalAlignment="Left" Height="35" FontSize="20" Text="{Binding reg.Service, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBoxItem IsSelected="True">Kleiner Service</ComboBoxItem>
                 <ComboBoxItem>Grosser Service</ComboBoxItem>
                 <ComboBoxItem>Rennski-Service</ComboBoxItem>
@@ -54,13 +54,13 @@
             </ComboBox>
        
             <Label Content="Priorität"  FontSize="20" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
-            <ComboBox VerticalAlignment="Center" Width="150" HorizontalAlignment="Left" Height="35" FontSize="20" Text="{Binding reg.Priority , Mode=TwoWay}">
+            <ComboBox VerticalAlignment="Center" Width="150" HorizontalAlignment="Left" Height="35" FontSize="20" Text="{Binding reg.Priority , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBoxItem IsSelected="True">Express</ComboBoxItem>
                 <ComboBoxItem>Standart</ComboBoxItem>
                 <ComboBoxItem>Tief</ComboBoxItem>
             </ComboBox>
             <Label Content="Status"  FontSize="20" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
-            <ComboBox VerticalAlignment="Center" Width="150" HorizontalAlignment="Left" Height="35" FontSize="20" Text="{Binding reg.Status , Mode=TwoWay}" >
+            <ComboBox VerticalAlignment="Center" Width="150" HorizontalAlignment="Left" Height="35" FontSize="20" Text="{Binding reg.Status , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                 <ComboBoxItem IsSelected="True">Offen</ComboBoxItem>
                 <ComboBoxItem>In Arbeit</ComboBoxItem>
                 <ComboBoxItem>Abgeschlossen</ComboBoxItem>

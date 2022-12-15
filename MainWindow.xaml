@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SkiServiceApp" xmlns:modelview="clr-namespace:SkiServiceApp.ModelView" d:DataContext="{d:DesignInstance Type=modelview:MainWindowModelView}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="675" Width="1200">
+        Title="MainWindow" Height="675" Width="1200" MinWidth="860" MinHeight="460">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"></RowDefinition>
@@ -24,10 +24,10 @@
         </ToolBarTray>
         
         <ToolBar Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">
-            <TextBox x:Name="suche" Padding="5" Width="150" BorderBrush="Black" Text="{Binding User.Name, Mode=TwoWay}"></TextBox>
+            <TextBox x:Name="suche" Padding="5" Width="150" BorderBrush="Black" Text="{Binding User.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <Button x:Name="such" Content="Suche" Padding="15,15,35,15" Command="{Binding CmdSuche}"></Button>
             <Separator></Separator>
-            <Button x:Name="anmelden" Content="{Binding Anmeld.status}" Padding="15" Command="{Binding CmdAnmelden}"></Button>            
+            <Button x:Name="anmelden" Content="{Binding Anmeld.Status, UpdateSourceTrigger=PropertyChanged}" Padding="15" Command="{Binding CmdAnmelden}"></Button>            
         </ToolBar>
         
             <ContentControl x:Name="con" Grid.Row="1" Margin="10">

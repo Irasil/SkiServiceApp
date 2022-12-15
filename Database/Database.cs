@@ -83,10 +83,7 @@ namespace SkiServiceApp.Database
                 else
                 {
                    return false;
-                }
-
-
-                
+                }               
 
             }
         }
@@ -105,9 +102,20 @@ namespace SkiServiceApp.Database
         public string userName { get; set; }
         public string token { get; set; }
     }
-    public class Anmelden 
+    public class Anmelden : ViewModelBase
     {
-        public string status { get; set; }
-        
+        public string status = "Anmelden";
+        public string Status
+        {
+            get { return status; }
+            set
+            {
+                status = value;
+                SetProperty<string>(ref status, value);
+                OnPropertyChanged(nameof(Status));
+            }
+        }
+
+
     }
 }

@@ -15,6 +15,7 @@ using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace SkiServiceApp.ModelView
 {
@@ -37,7 +38,11 @@ namespace SkiServiceApp.ModelView
         public Registrationen _regi = new Registrationen();
         public User _user  = new User();
         public LoginView login { get; set; }
-        public Anmelden _anmelden  = new Anmelden();
+        public Anmelden _anmeld = new Anmelden();
+        public bool isloging { get; set; } = true;
+        public bool isfilled { get; set; } = false;
+        
+        
 
 
 
@@ -50,20 +55,19 @@ namespace SkiServiceApp.ModelView
         public MainWindowModelView()
         {
             
-            _regi.Service = "Kleiner Service";
-            _regi.Priority = "Express";
-            Anmeld.status = "Anmelden";
+           
+           
             Registrationens = new ObservableCollection<Registrationen>();
             
             CmdAktu = new RelayCommand(param => Aktu());
             CmdNeu = new RelayCommand(param => Neu());
-            CmdNeuEr = new RelayCommand(param => NeuEr());
-            CmdAendern = new RelayCommand(param => Aendern(_regi));
-            CmdLoeschen = new RelayCommand(param => Loeschen(_regi));
-            CmdAendernSpeicher = new RelayCommand(param => AendernSpeicher(_regi));
+            CmdNeuEr = new RelayCommand(param => NeuEr(), param => CanAendernSpeichern());
+            CmdAendern = new RelayCommand(param => Aendern(_regi) , param => CanAendern());
+            CmdLoeschen = new RelayCommand(param => Loeschen(_regi), param => CanAendern());
+            CmdAendernSpeicher = new RelayCommand(param => AendernSpeicher(_regi) , param=> CanAendernSpeichern());
             CmdLoeschenSpeicher = new RelayCommand(param => LoeschenSpeicher());
             CmdAnmelden = new RelayCommand(param => Anmelden());
-            CmdAnmeldenSenden = new RelayCommand(param => AnmeldenSenden());
+            CmdAnmeldenSenden = new RelayCommand(param => AnmeldenSenden(), param => CanAnmeldenSenden());
             CmdSuche = new RelayCommand(param => Suche());
 
         }
@@ -92,14 +96,16 @@ namespace SkiServiceApp.ModelView
 
         public Anmelden Anmeld
         {
-            get { return _anmelden; }
+            get { return _anmeld; }
             set
             {
-                _anmelden = value;
-                SetProperty<Anmelden>(ref _anmelden, value);
-                OnPropertyChanged(nameof(_anmelden));
+                _anmeld = value;
+                SetProperty<Anmelden>(ref _anmeld, value);
+                OnPropertyChanged(nameof(Anmeld));
             }
         }
+
+
 
         private object content;
         public object Content
@@ -108,6 +114,7 @@ namespace SkiServiceApp.ModelView
             set
             {
                 content = value;
+                SetProperty<object>(ref content, value);
                 OnPropertyChanged(nameof(Content));
             }
         }
@@ -170,6 +177,15 @@ namespace SkiServiceApp.ModelView
             }
         }
 
+        private bool CanAendern()
+        {
+            if (isloging)
+            {
+                return true;
+            }
+            else { return false; }
+        }
+
         private void Loeschen(Registrationen reg)
         {
             if (_regi.Name != null)
@@ -190,6 +206,18 @@ namespace SkiServiceApp.ModelView
             Aktu();
         }
 
+        public bool CanAendernSpeichern()
+        {
+            if(_regi == null)
+            {
+                return false;
+            }
+            else
+            {
+                return _regi.Name != null && _regi.Email != null && _regi.Phone != null && _regi.Name != "" && _regi.Email != "" && _regi.Phone != "";
+            }
+        }
+
         private async void LoeschenSpeicher()
         {
             Database.Database.Delete(_regi);
@@ -199,13 +227,21 @@ namespace SkiServiceApp.ModelView
 
         private async void Anmelden()
         {
-            User.Name = string.Empty;
+            if (Anmeld.Status == "Anmelden") { User.Name = string.Empty;
             login = new LoginView();
             Content = login;
+            } else if (Anmeld.Status == "Abmelden")
+            {
+                isloging = false;
+                Anmeld.Status = "Anmelden";
+            }
+            
         }
        
         public async void AnmeldenSenden()
         {
+
+           
             
             _user.password = login.pwb.Password;
             Task<bool> suc;
@@ -217,9 +253,9 @@ namespace SkiServiceApp.ModelView
                 {
                     ErfolgreichView erfolgreich = new ErfolgreichView();
                     Content = erfolgreich;
-                    
-                    _anmelden.status = "abmelden";
-                    
+                    isloging= true;
+                    Anmeld.Status = "Abmelden";
+
                 }
                 else
                 {
@@ -232,6 +268,12 @@ namespace SkiServiceApp.ModelView
             }
             User.Name = string.Empty;
         }
+
+        public bool CanAnmeldenSenden()
+        {
+            if (login.pwb.Password != string.Empty && _user.Name != string.Empty) { return true; } else { return false; }
+        }
+
 
         private async void Suche()
         {
