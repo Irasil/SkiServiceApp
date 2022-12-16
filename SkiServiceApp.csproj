@@ -8,7 +8,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\001-bin.png" />
+    <None Remove="Images\002-add.png" />
+    <None Remove="Images\002-edit.png" />
+    <None Remove="Images\003-add.png" />
+    <None Remove="Images\003-loop.png" />
+    <None Remove="Images\004-loop.png" />
+    <None Remove="Images\004-search.png" />
+    <None Remove="Images\005-password.png" />
+    <None Remove="Images\005-search.png" />
+    <None Remove="Images\006-bearbeiten.png" />
+    <None Remove="Images\006-password.png" />
+    <None Remove="Images\anmeldung.png" />
+    <None Remove="Images\ski.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\001-bin.png" />
+    <Resource Include="Images\002-add.png" />
+    <Resource Include="Images\003-loop.png" />
+    <Resource Include="Images\004-search.png" />
+    <Resource Include="Images\005-password.png" />
+    <Resource Include="Images\006-bearbeiten.png" />
+    <Resource Include="Images\anmeldung.png" />
+    <Resource Include="Images\ski.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,6 +16,7 @@ using Newtonsoft.Json.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System.Windows;
 
 namespace SkiServiceApp.ModelView
 {
@@ -39,6 +40,7 @@ namespace SkiServiceApp.ModelView
         public User _user  = new User();
         public LoginView login { get; set; }
         public Anmelden _anmeld = new Anmelden();
+        public Status _status = new Status();
         public bool isloging { get; set; } = true;
         public bool isfilled { get; set; } = false;
         
@@ -79,7 +81,7 @@ namespace SkiServiceApp.ModelView
             {
                 _regi = value;
                 SetProperty<Registrationen>(ref _regi, value);
-                OnPropertyChanged(nameof(_regi));
+                OnPropertyChanged(nameof(reg));
             }
         }
 
@@ -105,6 +107,17 @@ namespace SkiServiceApp.ModelView
             }
         }
 
+        public Status Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                SetProperty<Status>(ref _status, value);
+                OnPropertyChanged(nameof(Status));
+            }
+        }
+
 
 
         private object content;
@@ -121,152 +134,220 @@ namespace SkiServiceApp.ModelView
 
         public async void Aktu()
         {
-            _regi = new Registrationen();
-            await (getTask = Database.Database.Get());
-            registrations = getTask.Result.ToList();
-            
-            AktuView aktu = new AktuView();
-            Registrationens = new ObservableCollection<Registrationen>(registrations);
-            Content = aktu;
-            
+            try
+            {
+                _regi = new Registrationen();
+                await (getTask = Database.Database.Get());
+                if (getTask.Result != null)
+                {
+                    registrations = getTask.Result.ToList();
+                    AktuView aktu = new AktuView();
+                    Registrationens = new ObservableCollection<Registrationen>(registrations);
+                    Content = aktu;
+                    Status.Statuse = "Efolgreiche Verbindung zum Server";
+                }
+                else
+                {
+                    Status.Statuse = "Leider konnte keine Verbindung zum Server hergestellt werden";
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         public void Neu()
         {
-            _regi = new Registrationen();
-            _regi.Service = "Kleiner Service";
-            _regi.Priority = "Express";
-            NeuView neu = new NeuView();
-            Content = neu;
+            try
+            {
+                _regi = new Registrationen();
+                _regi.Service = "Kleiner Service";
+                _regi.Priority = "Express";
+                NeuView neu = new NeuView();
+                Content = neu;
+            }
+            catch(Exception ex) { MessageBox.Show(ex.Message); }            
         }
 
         private void NeuEr()
         {
-            string lol = string.Empty;
-            reg.Created_Date = DateTime.Now;
-            reg.Status = "Offen";
+            try
+            {
+                reg.Created_Date = DateTime.Now;
+                reg.Status = "Offen";
 
-            if (reg.Priority == "Tief")
-            {
-                reg.Pickup_Date = reg.Created_Date.AddDays(12);
+                if (reg.Priority == "Tief")
+                {
+                    reg.Pickup_Date = reg.Created_Date.AddDays(12);
+                }
+                else if (reg.Priority == "Standart")
+                {
+                    reg.Pickup_Date = reg.Created_Date.AddDays(7);
+                }
+                else if (reg.Priority == "Express")
+                {
+                    reg.Pickup_Date = reg.Created_Date.AddDays(5);
+                }
+                Database.Database.Post(reg);
+                ErfolgreichView erfolgreich = new ErfolgreichView();
+                Content = erfolgreich;
+                Status.Statuse = "Erfolgreich erstellt!";
+                _regi = new Registrationen();
+                
             }
-            else if (reg.Priority == "Standart")
-            {
-                reg.Pickup_Date = reg.Created_Date.AddDays(7);
-            }
-            else if (reg.Priority == "Express")
-            {
-                reg.Pickup_Date = reg.Created_Date.AddDays(5);
-            }
-            Database.Database.Post(reg);
-            ErfolgreichView erfolgreich = new ErfolgreichView();
-            Content = erfolgreich;
+            catch(Exception ex) { MessageBox.Show(ex.Message); }
 
         }
 
         private void Aendern(Registrationen reg)
         {
-            if (_regi.Name != null)
+            try
             {
-                AendernView neu = new AendernView();
-                Content = neu;
+                if (_regi.Name == null)
+                {
+                    Aktu();
+                }
+                else
+                {                    
+                    AendernView neu = new AendernView();
+                    Content = neu;
+                }
+
+
             }
-            else
-            {
-                Aktu();
-            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+
         }
 
         private bool CanAendern()
         {
-            if (isloging)
+            try
             {
-                return true;
+                if (isloging)
+                {
+                    return true;
+                }
+                else { return false; }
             }
-            else { return false; }
+            catch (Exception ex) { MessageBox.Show(ex.Message); return false; }
         }
 
         private void Loeschen(Registrationen reg)
         {
-            if (_regi.Name != null)
+            try
             {
-                LoeschenView neu = new LoeschenView();
-                Content = neu;
+                if (_regi.Name != null)
+                {
+                    LoeschenView neu = new LoeschenView();
+                    Content = neu;
+                }
+                else
+                {
+                    Aktu();
+                }
+
+
             }
-            else
-            {
-                Aktu();
-            }
+            catch (Exception ex) { MessageBox.Show(ex.Message);}
         }
 
         public async void AendernSpeicher(Registrationen reg)
         {
-            Database.Database.Put(reg);
-            await Task.Delay(100);
-            Aktu();
+            try
+            {
+                Database.Database.Put(reg);
+                await Task.Delay(100);
+                Aktu();
+                await Task.Delay(100);
+                Status.Statuse = "Erfolgreich aktualisiert!";
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         public bool CanAendernSpeichern()
-        {
-            if(_regi == null)
+        {         
+            try
             {
-                return false;
+                if (_regi == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return _regi.Name != null && _regi.Email != null && _regi.Phone != null && _regi.Name != "" && _regi.Email != "" && _regi.Phone != "";
+                }
             }
-            else
-            {
-                return _regi.Name != null && _regi.Email != null && _regi.Phone != null && _regi.Name != "" && _regi.Email != "" && _regi.Phone != "";
-            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); return false; }
         }
 
         private async void LoeschenSpeicher()
         {
-            Database.Database.Delete(_regi);
-            await Task.Delay(100);
-            Aktu();
+            
+
+            try
+            {
+                Database.Database.Delete(_regi);
+                await Task.Delay(100);
+                Aktu();
+                await Task.Delay(100);
+                Status.Statuse = "Erfolgreich gelöscht!";
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
-        private async void Anmelden()
-        {
-            if (Anmeld.Status == "Anmelden") { User.Name = string.Empty;
-            login = new LoginView();
-            Content = login;
-            } else if (Anmeld.Status == "Abmelden")
+        public async void Anmelden()
+        {           
+
+            try
             {
-                isloging = false;
-                Anmeld.Status = "Anmelden";
+                if (Anmeld.Status == "Anmelden")
+                {
+                    User.Name = string.Empty;
+                    login = new LoginView();
+                    Content = login;
+                }
+                else if (Anmeld.Status == "Abmelden")
+                {
+                    isloging = false;
+                    Anmeld.Status = "Anmelden";
+                    Status.Statuse = "Erfolgreich Abgemeldet";
+                }
             }
-            
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+
         }
        
         public async void AnmeldenSenden()
-        {
-
-           
-            
-            _user.password = login.pwb.Password;
-            Task<bool> suc;
-            await (suc = Database.Database.Login(_user));
-            if (suc != null)
+        {       
+            try
             {
-                bool success = suc.Result;
-                if(success)
+                _user.password = login.pwb.Password;
+                Task<bool> suc;
+                await (suc = Database.Database.Login(_user));
+                if (suc != null)
                 {
-                    ErfolgreichView erfolgreich = new ErfolgreichView();
-                    Content = erfolgreich;
-                    isloging= true;
-                    Anmeld.Status = "Abmelden";
-
+                    bool success = suc.Result;
+                    if (success)
+                    {
+                        Aktu();
+                        await Task.Delay(100);
+                        isloging = true;
+                        Anmeld.Status = "Abmelden";
+                        Status.Statuse = "Erfolgreich Angemeldet";
+                    }
+                    else
+                    {
+                        Anmelden();
+                        await Task.Delay(100);
+                        Status.Statuse = "Anmelden Fehlgeschlagen";
+                    }
                 }
                 else
                 {
-
+                    Aktu();
+                    await Task.Delay(100);
                 }
+                User.Name = string.Empty;
             }
-            else
-            {
-                Aktu();
-            }
-            User.Name = string.Empty;
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         public bool CanAnmeldenSenden()
@@ -274,32 +355,32 @@ namespace SkiServiceApp.ModelView
             if (login.pwb.Password != string.Empty && _user.Name != string.Empty) { return true; } else { return false; }
         }
 
-
         private async void Suche()
         {
-            _regi = new Registrationen();
-            await (getTask = Database.Database.Get());
-            registrations = getTask.Result.ToList();
-            //await Task.Delay(100);
-            List<Registrationen> Registries = new List<Registrationen>();
-            Registries = registrations.ToList();
-            
-            if(_user.Name != null) {
-                Registries.Clear(); 
-            foreach (Registrationen anim in registrations)
+            try
             {
+                _regi = new Registrationen();
+                await (getTask = Database.Database.Get());
+                registrations = getTask.Result.ToList();
+                List<Registrationen> Registries = new List<Registrationen>();
+                Registries = registrations.ToList();
 
-                if (anim.Name.Contains(_user.Name) || anim.Email.Contains(_user.Name) || anim.Service.Contains(_user.Name) || anim.Priority.Contains(_user.Name) || anim.Status.Contains(_user.Name))
+                if (_user.Name != null)
                 {
-                    Registries.Add(anim);
+                    Registries.Clear();
+                    foreach (Registrationen anim in registrations)
+                    {
+                        if (anim.Name.Contains(_user.Name) || anim.Email.Contains(_user.Name) || anim.Service.Contains(_user.Name) || anim.Priority.Contains(_user.Name) || anim.Status.Contains(_user.Name))
+                        {
+                            Registries.Add(anim);
+                        }
+                    }
                 }
+                AktuView aktu = new AktuView();
+                Registrationens = new ObservableCollection<Registrationen>(Registries);
+                Content = aktu;
             }
-            }
-            AktuView aktu = new AktuView();
-            Registrationens = new ObservableCollection<Registrationen>(Registries);
-            Content = aktu;
-            //ErfolgreichView erfolgreich = new ErfolgreichView();
-            //Content = erfolgreich;
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
     }
 }
