@@ -53,7 +53,7 @@ namespace SkiServiceApp.ModelView
 
 
 
-
+        public Task<string> answerT { get; set; }
         public Task<List<Registrationen>> getTask { get; set; }
         public List<Registrationen> registrations { get; set; } = new List<Registrationen>();
         public ObservableCollection<Registrationen> Registrationens { get; set; }
@@ -349,7 +349,6 @@ namespace SkiServiceApp.ModelView
                 else
                 {
                     Aktu();
-                    await Task.Delay(100);
                 }
                 User.Name = string.Empty;
             }
@@ -396,9 +395,19 @@ namespace SkiServiceApp.ModelView
         }
         private async void DeblockSenden()
         {
-            Database.Database.PutMember(deblock);
-            ErfolgreichView erfolgreichView = new ErfolgreichView();
-            Content = erfolgreichView;
+            
+            await (  answerT = Database.Database.PutMember(deblock));
+            string answer = answerT.Result.ToString();
+            string lol = ";";
+            if (answer == "Mitarbeiter wurde wieder freigegeben")
+            {
+                Aktu();
+                await Task.Delay(100);
+                Status.Statuse = answer;
+            }
+            else{ Deblock(); Status.Statuse = answer; }
+            Status.Statuse = answer;
+            
         }
 
         private bool CanDeblockSenden()

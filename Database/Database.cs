@@ -105,7 +105,7 @@ namespace SkiServiceApp.Database
                 return false;
             }            
         }
-        public static async void PutMember(int? id)
+        public static async Task<string> PutMember(int? id)
         {
             try
             {
@@ -114,9 +114,11 @@ namespace SkiServiceApp.Database
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Settings.Default.JWT);
                     client.Timeout = TimeSpan.FromSeconds(900);
                     var respons = await client.PutAsJsonAsync($"https://localhost:7153/Mitarbeiter/{id}", id);
+                    string resultContent = await respons.Content.ReadAsStringAsync();
+                    return resultContent;
                 }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex) { MessageBox.Show(ex.Message); return null; }
         }
     }
 
