@@ -105,6 +105,19 @@ namespace SkiServiceApp.Database
                 return false;
             }            
         }
+        public static async void PutMember(int? id)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Settings.Default.JWT);
+                    client.Timeout = TimeSpan.FromSeconds(900);
+                    var respons = await client.PutAsJsonAsync($"https://localhost:7153/Mitarbeiter/{id}", id);
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
     }
 
     public class Root

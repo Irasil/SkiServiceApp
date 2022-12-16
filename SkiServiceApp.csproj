@@ -21,6 +21,7 @@
     <None Remove="Images\006-password.png" />
     <None Remove="Images\anmeldung.png" />
     <None Remove="Images\ski.png" />
+    <None Remove="Images\skiservice.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +37,7 @@
     <Resource Include="Images\006-bearbeiten.png" />
     <Resource Include="Images\anmeldung.png" />
     <Resource Include="Images\ski.png" />
+    <Resource Include="Images\skiservice.png" />
   </ItemGroup>
 
   <ItemGroup>

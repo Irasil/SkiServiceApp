@@ -34,6 +34,8 @@ namespace SkiServiceApp.ModelView
         public RelayCommand CmdAendernSpeicher { get; set; }
         public RelayCommand CmdLoeschenSpeicher { get; set; }
         public RelayCommand CmdSuche { get; set; }
+        public RelayCommand CmdDeblock { get; set; }
+        public RelayCommand CmdDeblockSenden { get; set; }
 
 
         public Registrationen _regi = new Registrationen();
@@ -41,10 +43,12 @@ namespace SkiServiceApp.ModelView
         public LoginView login { get; set; }
         public Anmelden _anmeld = new Anmelden();
         public Status _status = new Status();
+        public HomeView home = new HomeView();
         public bool isloging { get; set; } = true;
         public bool isfilled { get; set; } = false;
-        
-        
+        public int? deblock { get; set; } = null;
+
+
 
 
 
@@ -56,7 +60,7 @@ namespace SkiServiceApp.ModelView
 
         public MainWindowModelView()
         {
-            
+            Content = home;
            
            
             Registrationens = new ObservableCollection<Registrationen>();
@@ -71,6 +75,8 @@ namespace SkiServiceApp.ModelView
             CmdAnmelden = new RelayCommand(param => Anmelden());
             CmdAnmeldenSenden = new RelayCommand(param => AnmeldenSenden(), param => CanAnmeldenSenden());
             CmdSuche = new RelayCommand(param => Suche());
+            CmdDeblock = new RelayCommand(param => Deblock(), param => CanAendern());
+            CmdDeblockSenden = new RelayCommand(param => DeblockSenden(), param => CanDeblockSenden());
 
         }
 
@@ -381,6 +387,23 @@ namespace SkiServiceApp.ModelView
                 Content = aktu;
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private async void Deblock()
+        {
+            DeblockView deblockenView = new DeblockView();
+            Content = deblockenView;
+        }
+        private async void DeblockSenden()
+        {
+             Database.Database.PutMember(deblock);
+            ErfolgreichView erfolgreichView = new ErfolgreichView();
+            Content = erfolgreichView;
+        }
+
+        private bool CanDeblockSenden()
+        {
+            return deblock != null;
         }
     }
 }
