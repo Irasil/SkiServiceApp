@@ -14,7 +14,7 @@
                     <TextBox x:Name="un" Height="35" HorizontalAlignment="Stretch" Margin="5,0,10,0" VerticalContentAlignment="Center" FontSize="16" Text="{Binding Apis.Api , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 </StackPanel>
                 <DockPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" >
-                    <Button Content="Abbrechen" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdAktu}" IsCancel="True"></Button>
+                    <Button Content="_Abbrechen" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdAktu}" IsCancel="True"></Button>
                     <Button Content="_Speichern" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdApiSenden}" IsDefault="True"></Button>
                 </DockPanel>
             </Grid>

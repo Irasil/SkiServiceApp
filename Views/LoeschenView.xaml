@@ -71,14 +71,14 @@
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button x:Name="btnSpeichern"
-                    Content="Löschen"
+                    Content="_Löschen"
                     Height="25"
                     Width="70"
                     Margin="0,0,0,20"
                     Command="{Binding CmdLoeschenSpeicher}"
                     IsDefault="True"></Button>
             <Button x:Name="btnAbbrechen"
-                    Content="Abbrechen"
+                    Content="_Abbrechen"
                     Height="25"
                     Width="70"
                     Margin="10,0,10,20"

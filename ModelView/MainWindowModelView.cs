@@ -50,6 +50,7 @@ namespace SkiServiceApp.ModelView
         public bool isloging { get; set; } = true;
         public bool isfilled { get; set; } = false;
         public int? deblock { get; set; } = null;
+        public string abhol { get; set; } = string.Empty;
 
 
         public Task<string> answerT { get; set; }
@@ -206,7 +207,11 @@ namespace SkiServiceApp.ModelView
                 ErfolgreichView erfolgreich = new ErfolgreichView();
                 Content = erfolgreich;
                 Status.Statuse = "Erfolgreich erstellt!";
-                _regi = new Registrationen();
+                abhol = reg.Pickup_Date.ToString().Substring(0,10);
+                reg = new Registrationen();
+
+
+                
                 
             }
             catch(Exception ex) { MessageBox.Show(ex.Message); }

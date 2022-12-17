@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0" Background="#FF7BB7EC">
-            <MenuItem Header="Optionen" Margin="10,0,0,0" >
+            <MenuItem Header="_Optionen" Margin="10,0,0,0" >
                 <MenuItem Header="API-Link" Command="{Binding CmdApi}"></MenuItem>
                 <MenuItem Header="User deblockieren" Command="{Binding CmdDeblock}"></MenuItem>
             </MenuItem>
@@ -53,7 +53,7 @@
                 <Button x:Name="neu" Padding="15,2,15,2" Command="{Binding CmdNeu}">
                     <StackPanel Orientation="Vertical">
                         <Image Width="35" Source="\Images\002-add.png"  Stretch="Uniform"/>
-                        <TextBlock>Erstellen</TextBlock>
+                        <Label Content="_Erstellen"></Label>
                     </StackPanel>
                 </Button>
                 
@@ -61,19 +61,19 @@
                 <Button x:Name="ander" Padding="15,2,15,2" Command="{Binding CmdAendern}">
                     <StackPanel Orientation="Vertical">
                         <Image Width="35" Source="\Images\006-bearbeiten.png"  Stretch="Uniform"/>
-                        <TextBlock>Bearbeiten</TextBlock>
+                        <Label Content="_Bearbeiten"></Label>
                     </StackPanel>
                 </Button>
                 <Button x:Name="lösch" Padding="15,2,15,2" Command="{Binding CmdLoeschen}">
                     <StackPanel Orientation="Vertical">
                         <Image Width="35" Source="\Images\001-bin.png"  Stretch="Uniform"/>
-                        <TextBlock>Löschen</TextBlock>
+                        <Label Content="_Löschen"></Label>
                     </StackPanel>
                 </Button>
             </ToolBar>
            
         </ToolBarTray>
-        <Image Grid.Row="1" Source="/Images/lolo.png" Margin="25,5,0,0" Height="30"></Image>
+        <Image Grid.Row="1" Source="/Images/lolo.png" Margin="55,5,0,0" Height="30"></Image>
 
 
         <ToolBar Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" ToolBarTray.IsLocked="True" ToolBar.OverflowMode="Never" Loaded="ToolBar_Loaded" Margin="0,0,8,0">
@@ -84,7 +84,7 @@
             <Button x:Name="such" Padding="15,2,15,2" Command="{Binding CmdSuche}">
                 <StackPanel Orientation="Vertical">
                     <Image Width="35" Source="\Images\004-search.png"  Stretch="Uniform"/>
-                    <TextBlock>Suchen</TextBlock>
+                    <Label Content="_Suchen"></Label>
                 </StackPanel>
             </Button>
             <Separator></Separator>

@@ -14,9 +14,9 @@
                 <GradientStop Color="#FF9100E8" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
+        
+        <Image  Source="\Images\skiservice.png"   VerticalAlignment="Center" HorizontalAlignment="Center" Height="300">
 
-        <Image Source="\Images\skiservice.png"   VerticalAlignment="Center" HorizontalAlignment="Center" Height="300">
-            
         </Image>
     </Grid>
 </UserControl>
