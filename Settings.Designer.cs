@@ -23,18 +23,21 @@ namespace SkiServiceApp {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:7153/Registration/")]
         public string REST_URL {
             get {
                 return ((string)(this["REST_URL"]));
             }
+            set {
+                this["REST_URL"] = value;
+            }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("lol")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Token")]
         public string JWT {
             get {
                 return ((string)(this["JWT"]));

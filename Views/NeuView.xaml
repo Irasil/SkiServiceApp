@@ -22,7 +22,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <DockPanel Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2" VerticalAlignment="Center" >
                 <Label Content="Name"  FontSize="20" VerticalAlignment="Center" Width="80" HorizontalAlignment="Left" Margin="20,0,0,0"></Label>
@@ -64,7 +64,7 @@
         
         
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button x:Name="btnSpeichern"
+            <Button Style="{DynamicResource ButtonStyle1}" x:Name="btnSpeichern"
                     Content="Speichern"
                     Height="25"
                     Width="70"
@@ -76,7 +76,7 @@
                     Content="Abbrechen"
                     Height="25"
                     Width="70"
-                    Margin="40,0,10,20"
+                    Margin="20,0,10,20"
                     Command="{Binding CmdAktu}"
                     IsCancel="True">
 

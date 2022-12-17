@@ -36,6 +36,8 @@ namespace SkiServiceApp.ModelView
         public RelayCommand CmdSuche { get; set; }
         public RelayCommand CmdDeblock { get; set; }
         public RelayCommand CmdDeblockSenden { get; set; }
+        public RelayCommand CmdApi { get; set; }
+        public RelayCommand CmdApiSenden { get; set; }
 
 
         public Registrationen _regi = new Registrationen();
@@ -43,14 +45,11 @@ namespace SkiServiceApp.ModelView
         public LoginView login { get; set; }
         public Anmelden _anmeld = new Anmelden();
         public Status _status = new Status();
+        public API _api = new API();
         public HomeView home = new HomeView();
         public bool isloging { get; set; } = true;
         public bool isfilled { get; set; } = false;
         public int? deblock { get; set; } = null;
-
-
-
-
 
 
         public Task<string> answerT { get; set; }
@@ -77,6 +76,8 @@ namespace SkiServiceApp.ModelView
             CmdSuche = new RelayCommand(param => Suche());
             CmdDeblock = new RelayCommand(param => Deblock(), param => CanAendern());
             CmdDeblockSenden = new RelayCommand(param => DeblockSenden(), param => CanDeblockSenden());
+            CmdApi = new RelayCommand(param => Api());
+            CmdApiSenden = new RelayCommand(param => ApiSenden() , param => CanApiSenden());
 
         }
 
@@ -124,7 +125,16 @@ namespace SkiServiceApp.ModelView
             }
         }
 
-
+        public API Apis
+        {
+            get { return _api; }
+            set
+            {
+                _api = value;
+                SetProperty<API>(ref _api, value);
+                OnPropertyChanged(nameof(Apis));
+            }
+        }
 
         private object content;
         public object Content
@@ -326,24 +336,30 @@ namespace SkiServiceApp.ModelView
             try
             {
                 _user.password = login.pwb.Password;
-                Task<bool> suc;
+                Task<string> suc;
                 await (suc = Database.Database.Login(_user));
                 if (suc != null)
                 {
-                    bool success = suc.Result;
-                    if (success)
+                    string success = suc.Result;
+                    if (success == "User ist blockiert")
+                    {
+                        Aktu();
+                        await Task.Delay(100);
+                        Status.Statuse = success;
+                    }
+                    else if (success == "User oder Passwort sind falsch")
+                    {
+                        Anmelden();
+                        await Task.Delay(100);                        
+                        Status.Statuse = success;
+                    }
+                    else
                     {
                         Aktu();
                         await Task.Delay(100);
                         isloging = true;
                         Anmeld.Status = "Abmelden";
                         Status.Statuse = "Erfolgreich Angemeldet";
-                    }
-                    else
-                    {
-                        Anmelden();
-                        await Task.Delay(100);
-                        Status.Statuse = "Anmelden Fehlgeschlagen";
                     }
                 }
                 else
@@ -398,7 +414,6 @@ namespace SkiServiceApp.ModelView
             
             await (  answerT = Database.Database.PutMember(deblock));
             string answer = answerT.Result.ToString();
-            string lol = ";";
             if (answer == "Mitarbeiter wurde wieder freigegeben")
             {
                 Aktu();
@@ -413,6 +428,25 @@ namespace SkiServiceApp.ModelView
         private bool CanDeblockSenden()
         {
             return deblock != null;
+        }
+
+        private async void Api()
+        {
+            Apis.Api = Settings.Default.REST_URL;
+            APILinkView aPILinkView = new APILinkView();
+            Content = aPILinkView;
+        }
+
+        private async void ApiSenden()
+        {
+            Settings.Default.REST_URL = Apis.Api.ToString();
+            string lol = Settings.Default.REST_URL;
+            Status.Statuse = "Api-Link erfolgreich gespeichert";
+            Content = home;
+        }
+        private bool CanApiSenden()
+        {
+            return Apis.Api != null && Apis.Api != "" && isloging;
         }
     }
 }

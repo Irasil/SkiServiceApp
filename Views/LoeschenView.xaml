@@ -81,7 +81,7 @@
                     Content="Abbrechen"
                     Height="25"
                     Width="70"
-                    Margin="40,0,10,20"
+                    Margin="10,0,10,20"
                     Command="{Binding CmdAktu}"
                     IsCancel="True">
 

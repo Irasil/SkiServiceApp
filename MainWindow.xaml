@@ -5,10 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SkiServiceApp" xmlns:modelview="clr-namespace:SkiServiceApp.ModelView" d:DataContext="{d:DesignInstance Type=modelview:MainWindowModelView}"
         mc:Ignorable="d"
+        Background="#FF7BB7EC"
         
         Icon="\Images\ski.png"
-        Title="Ski Service App" Height="700" Width="1200" MinWidth="860" MinHeight="480">
+        Title="Ski Service App" Height="700" Width="1200" MinWidth="1017" MinHeight="505"
+        ResizeMode="CanResizeWithGrip">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF1B79E2" Offset="0"/>
+                <GradientStop Color="#FF9100E8" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition Height="65"></RowDefinition>
@@ -17,19 +25,29 @@
             
         </Grid.RowDefinitions>
 
-        <Menu Grid.Row="0">
-            <MenuItem Header="Optionen" Margin="10,0,0,0">
-                <MenuItem Header="API-Link"></MenuItem>
+        <Menu Grid.Row="0" Background="#FF7BB7EC">
+            <MenuItem Header="Optionen" Margin="10,0,0,0" >
+                <MenuItem Header="API-Link" Command="{Binding CmdApi}"></MenuItem>
                 <MenuItem Header="User deblockieren" Command="{Binding CmdDeblock}"></MenuItem>
             </MenuItem>
         </Menu>
-        <ToolBarTray   Grid.Row="1" VerticalAlignment="Top">
+        <ToolBarTray   Grid.Row="1" VerticalAlignment="Top" Margin="8,0,0,0">
+            <ToolBarTray.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF1B79E2" Offset="0"/>
+                    <GradientStop Color="#FF2A6AE3" Offset="1"/>
+                </LinearGradientBrush>
+            </ToolBarTray.Background>
             <ToolBar  Band="0"
-                     BandIndex="1" HorizontalAlignment="Center">
+                     BandIndex="1" HorizontalAlignment="Center" ToolBarTray.IsLocked="True" ToolBar.OverflowMode="Never" Loaded="ToolBar_Loaded">
+                <ToolBar.Background>
+                    <SolidColorBrush Color="#FF7BB7EC"></SolidColorBrush>
+                </ToolBar.Background>
+                
                 <Button x:Name="aktu" HorizontalAlignment="Center" Padding="15,2,15,2" Command="{Binding CmdAktu}" >
                     <StackPanel Orientation="Vertical">
                         <Image Width="35" Source="/Images/003-loop.png"  Stretch="Uniform"/>
-                        <TextBlock>Aktualisieren</TextBlock>
+                        <Label Content="_Aktualisieren"></Label>
                     </StackPanel>
                 </Button>
                 <Button x:Name="neu" Padding="15,2,15,2" Command="{Binding CmdNeu}">
@@ -53,10 +71,16 @@
                     </StackPanel>
                 </Button>
             </ToolBar>
+           
         </ToolBarTray>
-        
-        <ToolBar Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right">
-            <TextBox x:Name="suche" Padding="5" Width="150" BorderBrush="Black" Text="{Binding User.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Image Grid.Row="1" Source="/Images/lolo.png" Margin="25,5,0,0" Height="30"></Image>
+
+
+        <ToolBar Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" ToolBarTray.IsLocked="True" ToolBar.OverflowMode="Never" Loaded="ToolBar_Loaded" Margin="0,0,8,0">
+            <ToolBar.Background>
+                <SolidColorBrush Color="#FF7BB7EC"></SolidColorBrush>
+            </ToolBar.Background>
+            <TextBox x:Name="suche" Margin="10,0,0,0"  Padding="5" Width="150" BorderBrush="Black" Text="{Binding User.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="#FFAECFF3"></TextBox>
             <Button x:Name="such" Padding="15,2,15,2" Command="{Binding CmdSuche}">
                 <StackPanel Orientation="Vertical">
                     <Image Width="35" Source="\Images\004-search.png"  Stretch="Uniform"/>
@@ -72,16 +96,29 @@
             </Button>            
         </ToolBar>
         
-            <ContentControl x:Name="con" Grid.Row="2" Margin="10">
-            <ScrollViewer>
-                <Border  BorderBrush="Black" BorderThickness="1">
+            <ContentControl x:Name="con" Grid.Row="2" Margin="10,5,10,10">
+            <ScrollViewer Style="{DynamicResource ScrollViewerStyle1}">
+                <ScrollViewer.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF1B79E2" Offset="0"/>
+                        <GradientStop Color="#FF9100E8" Offset="1"/>
+                    </LinearGradientBrush>
+                </ScrollViewer.Background>
+                <ScrollViewer.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF1B79E2" Offset="0"/>
+                        <GradientStop Color="#FF9100E8" Offset="1"/>
+                    </LinearGradientBrush>
+                </ScrollViewer.Foreground>
+
+                <Border  BorderBrush="Black" BorderThickness="1" >
                 <ContentControl x:Name="content1" Content="{Binding Content}"></ContentControl>
             </Border>
         </ScrollViewer>
         </ContentControl>
         <StatusBar Grid.Row="3"
-                   Background="LightGray">
-            <StatusBarItem HorizontalAlignment="Left">
+                   Background="#FF9100E8">
+            <StatusBarItem HorizontalAlignment="Left" Background="#FF9100E8">
                 <TextBlock Margin="10,0,10,0"
                            Text="{Binding Status.Statuse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
             </StatusBarItem>

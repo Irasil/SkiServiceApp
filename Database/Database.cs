@@ -79,7 +79,7 @@ namespace SkiServiceApp.Database
             catch (Exception ex){MessageBox.Show(ex.Message);}            
         }
 
-        public static async Task<bool> Login(User user)
+        public static async Task<string> Login(User user)
         {
 
             try
@@ -94,15 +94,15 @@ namespace SkiServiceApp.Database
                         Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(resultContent);
                         Settings.Default.JWT = myDeserializedClass.value.token;
                         Settings.Default.Save();
-                        return true;
+                        return resultContent;
                     }
-                    else {return false;}
+                    else {return resultContent;}
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                return false;
+                return ex.Message;
             }            
         }
         public static async Task<string> PutMember(int? id)
@@ -164,5 +164,21 @@ namespace SkiServiceApp.Database
                 OnPropertyChanged(nameof(Statuse));
             }
         }
+    }
+
+    public class API : ViewModelBase
+    {
+        public string _api = string.Empty;
+        public string Api
+        {
+            get { return _api; }
+            set
+            {
+                _api = value;
+                SetProperty<string>(ref _api, value);
+                OnPropertyChanged(nameof(Api));
+            }
+        }
+
     }
 }

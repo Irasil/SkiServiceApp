@@ -2,11 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SkiServiceApp" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="REST_URL" Type="System.String" Scope="Application">
+    <Setting Name="REST_URL" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://localhost:7153/Registration/</Value>
     </Setting>
     <Setting Name="JWT" Type="System.String" Scope="User">
-      <Value Profile="(Default)">lol</Value>
+      <Value Profile="(Default)">Token</Value>
     </Setting>
   </Settings>
 </SettingsFile>

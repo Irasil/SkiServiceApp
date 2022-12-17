@@ -16,15 +16,23 @@
 					  Grid.Row="0"
 					  Grid.Column="0"
 					  Margin="5"
-                  FontSize="16">
+                  FontSize="16"
+                  HeadersVisibility="Column" BorderThickness="0"
+                  HorizontalAlignment="Left">
+            <DataGrid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF1B79E2" Offset="0"/>
+                    <GradientStop Color="#FF9100E8" Offset="1"/>
+                </LinearGradientBrush>
+            </DataGrid.Background>
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CmdAendern}"/>
             </DataGrid.InputBindings>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id"
-                                    
+            <DataGrid.Columns >
+                
+                <DataGridTextColumn Header="Id"                                    
 										Binding="{Binding Id}"
-										Width="60" />
+										Width="60"/>
                 <DataGridTextColumn Header="Name"
 										Binding="{Binding Name}"
 										Width="150" />
