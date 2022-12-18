@@ -20,17 +20,10 @@ namespace SkiServiceApp.Views
     /// Interaction logic for AktuView.xaml
     /// </summary>
     public partial class AktuView : UserControl
-    {
-        private Registrationen _registration;
+    {        
         public AktuView()
         {
-            InitializeComponent();
-            
-        }
-
-        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
+            InitializeComponent();            
         }
     }
 }

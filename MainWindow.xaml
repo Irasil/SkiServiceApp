@@ -80,7 +80,7 @@
             <ToolBar.Background>
                 <SolidColorBrush Color="#FF7BB7EC"></SolidColorBrush>
             </ToolBar.Background>
-            <TextBox x:Name="suche" Margin="10,0,0,0"  Padding="5" Width="150" BorderBrush="Black" Text="{Binding User.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="#FFAECFF3"></TextBox>
+            <TextBox x:Name="suche" Margin="10,0,0,0"  Padding="5" Width="150" BorderBrush="Black" Text="{Binding User.Namen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="#FFAECFF3"></TextBox>
             <Button x:Name="such" Padding="15,2,15,2" Command="{Binding CmdSuche}">
                 <StackPanel Orientation="Vertical">
                     <Image Width="35" Source="\Images\004-search.png"  Stretch="Uniform"/>

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <GroupBox  Header="Login" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center" Height="450" Width="350">
+        <GroupBox  Header="Login" FontSize="26" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Height="450" Width="350">
             <Grid>
             <StackPanel Orientation="Vertical">
                     <Image HorizontalAlignment="Center" VerticalAlignment="Center" Margin="25,25,25,0" Source="\Images\anmeldung.png" Width="150"></Image>
@@ -20,12 +20,7 @@
                     <Button Content="_Abbrechen" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdAktu}" IsDefault="True"></Button>
                     <Button Content="_Anmelden" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdAnmeldenSenden}" IsDefault="True"></Button>                    
                 </DockPanel>
-           </Grid>
-            
-
-
-
+           </Grid>    
         </GroupBox>
-
     </Grid>
 </UserControl>

@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <GroupBox  Header="User deblockieren" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center" Height="300" Width="350">
+        <GroupBox  Header="User deblockieren" Foreground="Black" FontSize="26" FontStyle="Normal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="300" Width="350">
+            
             <Grid>
                 <StackPanel Orientation="Vertical">
                     <Label Content="User Id"  FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,30,0,0"></Label>

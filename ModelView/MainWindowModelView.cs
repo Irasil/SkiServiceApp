@@ -80,8 +80,8 @@ namespace SkiServiceApp.ModelView
             CmdAktu = new RelayCommand(param => Aktu());
             CmdNeu = new RelayCommand(param => Neu());
             CmdNeuEr = new RelayCommand(param => NeuEr(), param => CanAendernSpeichern());
-            CmdAendern = new RelayCommand(param => Aendern(_regi) , param => CanAendern());
-            CmdLoeschen = new RelayCommand(param => Loeschen(_regi), param => CanAendern());
+            CmdAendern = new RelayCommand(param => Aendern() , param => CanAendern());
+            CmdLoeschen = new RelayCommand(param => Loeschen(), param => CanAendern());
             CmdAendernSpeicher = new RelayCommand(param => AendernSpeicher(_regi) , param=> CanAendernSpeichern());
             CmdLoeschenSpeicher = new RelayCommand(param => LoeschenSpeicher());
             CmdAnmelden = new RelayCommand(param => Anmelden());
@@ -215,9 +215,11 @@ namespace SkiServiceApp.ModelView
         {
             try
             {
-                _regi = new Registrationen();
-                _regi.Service = "Kleiner Service";
-                _regi.Priority = "Express";
+                _regi = new Registrationen
+                {
+                    Service = "Kleiner Service",
+                    Priority = "Express"
+                };
                 NeuView neu = new NeuView();
                 Content = neu;
             }
@@ -260,7 +262,7 @@ namespace SkiServiceApp.ModelView
         /// Anzeige der View, um ein Datansatz zu bearbeiten, falls nichts Ausgewählt ist lade alle Registrationen
         /// </summary>
         /// <param name="reg"></param>
-        private void Aendern(Registrationen reg)
+        private void Aendern()
         {
             try
             {
@@ -298,7 +300,7 @@ namespace SkiServiceApp.ModelView
         /// Anzeige der View, um einen Datensatz zu löschen
         /// </summary>
         /// <param name="reg"></param>
-        private void Loeschen(Registrationen reg)
+        private void Loeschen()
         {
             try
             {
@@ -379,10 +381,12 @@ namespace SkiServiceApp.ModelView
             {
                 if (Anmeld.Status == "Anmelden")
                 {
-                    User.Name = string.Empty;
+                    User.Namen = string.Empty;
+                    await Task.Delay(100);
+
                     login = new LoginView();
                     Content = login;
-                }
+                                    }
                 else if (Anmeld.Status == "Abmelden")
                 {
                     isloging = false;
@@ -431,7 +435,7 @@ namespace SkiServiceApp.ModelView
                 {
                     Aktu();
                 }
-                User.Name = string.Empty;
+                User.Namen = string.Empty;
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
@@ -442,7 +446,7 @@ namespace SkiServiceApp.ModelView
         /// <returns></returns>
         public bool CanAnmeldenSenden()
         {
-            if (login.pwb.Password != string.Empty && _user.Name != string.Empty) { return true; } else { return false; }
+            if (login.pwb.Password != string.Empty && _user.Namen != string.Empty) { return true; } else { return false; }
         }
         
         /// <summary>
@@ -496,12 +500,12 @@ namespace SkiServiceApp.ModelView
                 List<Registrationen> Registries = new List<Registrationen>();
                 Registries = registrations.ToList();
 
-                if (_user.Name != null)
+                if (_user.Namen != null)
                 {
                     Registries.Clear();
                     foreach (Registrationen anim in registrations)
                     {
-                        if (anim.Name.Contains(_user.Name) || anim.Email.Contains(_user.Name) || anim.Service.Contains(_user.Name) || anim.Priority.Contains(_user.Name) || anim.Status.Contains(_user.Name))
+                        if (anim.Name.Contains(_user.Namen) || anim.Email.Contains(_user.Namen) || anim.Service.Contains(_user.Namen) || anim.Priority.Contains(_user.Namen) || anim.Status.Contains(_user.Namen))
                         {
                             Registries.Add(anim);
                         }
@@ -531,8 +535,7 @@ namespace SkiServiceApp.ModelView
         /// </summary>
         private async void ApiSenden()
         {
-            Settings.Default.REST_URL = Apis.Api.ToString();
-            string lol = Settings.Default.REST_URL;
+            Settings.Default.REST_URL = Apis.Api.ToString();           
             Status.Statuse = "Api-Link erfolgreich gespeichert";
             Content = home;
         }
