@@ -58,7 +58,7 @@ namespace SkiServiceApp.ModelView
         public Status _status = new Status();
         public API _api = new API();
         public HomeView home = new HomeView();
-        public bool isloging { get; set; } = true;
+        public bool isloging { get; set; } = false;
         public bool isfilled { get; set; } = false;
         public int? deblock { get; set; } = null;
         public string abhol { get; set; } = string.Empty;
@@ -98,7 +98,7 @@ namespace SkiServiceApp.ModelView
             CmdSuche = new RelayCommand(param => Suche());
             CmdDeblock = new RelayCommand(param => Deblock(), param => CanAendern());
             CmdDeblockSenden = new RelayCommand(param => DeblockSenden(), param => CanDeblockSenden());
-            CmdApi = new RelayCommand(param => Api());
+            CmdApi = new RelayCommand(param => Api(), param => CanAendern());
             CmdApiSenden = new RelayCommand(param => ApiSenden() , param => CanApiSenden());
         }
 
@@ -390,7 +390,6 @@ namespace SkiServiceApp.ModelView
             {
                 if (Anmeld.Status == "Anmelden")
                 {
-                    User.Namen = string.Empty;
                     await Task.Delay(100);
 
                     login = new LoginView();
@@ -418,6 +417,7 @@ namespace SkiServiceApp.ModelView
                 await (suc = Database.Database.Login(_user));
                 if (suc != null)
                 {
+                    User.Namen = string.Empty;
                     string success = suc.Result;
                     if (success == "User ist blockiert")
                     {
@@ -455,7 +455,9 @@ namespace SkiServiceApp.ModelView
         /// <returns></returns>
         public bool CanAnmeldenSenden()
         {
-            if (login.pwb.Password != string.Empty && _user.Namen != string.Empty) { return true; } else { return false; }
+            if (login.pwb.Password != string.Empty && User.Namen != string.Empty) 
+            { return true; } 
+            else { return false; }
         }
         
         /// <summary>
