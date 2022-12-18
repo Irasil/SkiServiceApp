@@ -28,11 +28,20 @@ namespace SkiServiceApp
     {
         MainWindowModelView modelView = new MainWindowModelView();
         
+        /// <summary>
+        /// MainWindow Initialisieren und DatenContext auf MainWindowModelView setzen
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
             DataContext = modelView;
         }
+
+        /// <summary>
+        /// Ausblenden der Toolbar Erweiterungspfeile
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ToolBar_Loaded(object sender, RoutedEventArgs e)
         {
             ToolBar toolBar = sender as ToolBar;
@@ -47,7 +56,5 @@ namespace SkiServiceApp
                 mainPanelBorder.Margin = new Thickness();
             }
         }
-
-
     }  
 }

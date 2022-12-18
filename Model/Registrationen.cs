@@ -8,6 +8,9 @@ using System.Windows.Input;
 
 namespace SkiServiceApp.Model
 {
+    /// <summary>
+    /// Klasse für die Registrationen
+    /// </summary>
     public class Registrationen : ViewModelBase
     {
         public int Id { get; set; }
@@ -22,6 +25,9 @@ namespace SkiServiceApp.Model
 
         public string Status { get; set; }
     }
+    /// <summary>
+    /// Klasse für die die Listen der Registrationen
+    /// </summary>
     public class Keywordlist
     {
         public List<Registrationen> Keywords { get; set; }

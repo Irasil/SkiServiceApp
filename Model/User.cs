@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SkiServiceApp.Model
 {
+    /// <summary>
+    /// Klasse für die Mitarbeiter
+    /// </summary>
     public class User : ViewModelBase
     {
         public int Id { get; set; }

@@ -23,6 +23,11 @@ namespace SkiServiceApp.Database
 
         public Database() {}
 
+
+        /// <summary>
+        /// Get Verbindung zu der API
+        /// </summary>
+        /// <returns> Eine Task-Liste von Registrationen</returns>
         public static async Task<List<Registrationen>?> Get()
         {
             try
@@ -37,7 +42,10 @@ namespace SkiServiceApp.Database
             }catch{return null;}
             
         }
-
+        /// <summary>
+        /// Post Verbindung zu der API
+        /// </summary>
+        /// <param name="reg">Die Erstellte Registration</param>
         public static async void Post(Registrationen reg)
         {
             try
@@ -51,6 +59,10 @@ namespace SkiServiceApp.Database
             catch (Exception ex){MessageBox.Show(ex.Message);}
         }       
 
+        /// <summary>
+        /// Put Verbindung zu der API
+        /// </summary>
+        /// <param name="reg">Die Registration mit der Änderung</param>
         public static async void Put(Registrationen reg)
         {
             try
@@ -65,6 +77,10 @@ namespace SkiServiceApp.Database
             catch (Exception ex){MessageBox.Show(ex.Message);}            
         }
 
+        /// <summary>
+        /// Delete Verbindung zu der API
+        /// </summary>
+        /// <param name="reg">Die Registration die gelöscht werden soll</param>
         public static async void Delete(Registrationen reg)
         {
             try
@@ -79,6 +95,11 @@ namespace SkiServiceApp.Database
             catch (Exception ex){MessageBox.Show(ex.Message);}            
         }
 
+        /// <summary>
+        /// Mitarbeiter Login Post Verbindung zu der API, Speichern des JWT in den Settings
+        /// </summary>
+        /// <param name="user">Der Name des Mitarbeiters</param>
+        /// <returns>Die Antwort der API</returns>
         public static async Task<string> Login(User user)
         {
 
@@ -105,6 +126,12 @@ namespace SkiServiceApp.Database
                 return ex.Message;
             }            
         }
+
+        /// <summary>
+        /// Put Verbindung zu der API, um geblockte Mitarbeiter zu entblocken
+        /// </summary>
+        /// <param name="id">Die Id des zu entblockenden Mitarbeiters</param>
+        /// <returns>Die Antwort der API</returns>
         public static async Task<string> PutMember(int? id)
         {
             try
@@ -122,6 +149,9 @@ namespace SkiServiceApp.Database
         }
     }
 
+    /// <summary>
+    /// Klasse für die Objektifizierung des JWTs
+    /// </summary>
     public class Root
     {
         public object contentType { get; set; }
@@ -130,12 +160,18 @@ namespace SkiServiceApp.Database
         public Value value { get; set; }
     }
 
+    /// <summary>
+    /// Klasse für den Inhalt der Autentifizierungs Antwort
+    /// </summary>
     public class Value
     {
         public string userName { get; set; }
         public string token { get; set; }
     }
 
+    /// <summary>
+    /// Klasse Für die Anzeige, ob man Angemeldet oder Abgemeldet ist
+    /// </summary>
     public class Anmelden : ViewModelBase
     {
         public string status = "Anmelden";
@@ -151,6 +187,9 @@ namespace SkiServiceApp.Database
         }
     }
 
+    /// <summary>
+    /// Klasse für den Inhalt der Statusbar
+    /// </summary>
     public class Status : ViewModelBase
     {
         public string status = string.Empty;
@@ -166,6 +205,9 @@ namespace SkiServiceApp.Database
         }
     }
 
+    /// <summary>
+    /// Klasse für den API-Link
+    /// </summary>
     public class API : ViewModelBase
     {
         public string _api = string.Empty;

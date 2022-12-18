@@ -17,13 +17,20 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Windows;
+using System.Globalization;
 
 namespace SkiServiceApp.ModelView
 {
+    /// <summary>
+    /// Klasse für das MVVM
+    /// </summary>
     public class MainWindowModelView : ViewModelBase
     {
-        public MainWindow main;
-
+        /// <summary>
+        ///
+        /// </summary>
+         
+        #region Command Properties
         public RelayCommand CmdAktu { get; set; }
         public RelayCommand CmdNeu { get; set; }
         public RelayCommand CmdNeuEr { get; set; }
@@ -38,8 +45,9 @@ namespace SkiServiceApp.ModelView
         public RelayCommand CmdDeblockSenden { get; set; }
         public RelayCommand CmdApi { get; set; }
         public RelayCommand CmdApiSenden { get; set; }
+        #endregion
 
-
+        #region Properties Initialisieren
         public Registrationen _regi = new Registrationen();
         public User _user  = new User();
         public LoginView login { get; set; }
@@ -58,10 +66,14 @@ namespace SkiServiceApp.ModelView
         public List<Registrationen> registrations { get; set; } = new List<Registrationen>();
         public ObservableCollection<Registrationen> Registrationens { get; set; }
 
+        #endregion
+
+        /// <summary>
+        /// Konstruktor: Alle Commands Initialisieren und auf ihre Ausführbarkeit prüfen
+        /// </summary>
         public MainWindowModelView()
         {
-            Content = home;
-           
+            Content = home;          
            
             Registrationens = new ObservableCollection<Registrationen>();
             
@@ -79,10 +91,13 @@ namespace SkiServiceApp.ModelView
             CmdDeblockSenden = new RelayCommand(param => DeblockSenden(), param => CanDeblockSenden());
             CmdApi = new RelayCommand(param => Api());
             CmdApiSenden = new RelayCommand(param => ApiSenden() , param => CanApiSenden());
-
         }
 
-    public Registrationen reg
+        #region Properties OnPropertyChange
+        /// <summary>
+        /// Property Registrationen
+        /// </summary>
+        public Registrationen reg
         {
             get { return _regi; }
             set
@@ -93,6 +108,9 @@ namespace SkiServiceApp.ModelView
             }
         }
 
+        /// <summary>
+        /// Property User
+        /// </summary>
         public User User
         {
             get { return _user; }
@@ -104,6 +122,9 @@ namespace SkiServiceApp.ModelView
             }
         }
 
+        /// <summary>
+        /// Property An- und Abmelden
+        /// </summary>
         public Anmelden Anmeld
         {
             get { return _anmeld; }
@@ -115,6 +136,9 @@ namespace SkiServiceApp.ModelView
             }
         }
 
+        /// <summary>
+        /// Property Statusbar
+        /// </summary>
         public Status Status
         {
             get { return _status; }
@@ -126,6 +150,9 @@ namespace SkiServiceApp.ModelView
             }
         }
 
+        /// <summary>
+        /// Property API-Link
+        /// </summary>
         public API Apis
         {
             get { return _api; }
@@ -137,6 +164,9 @@ namespace SkiServiceApp.ModelView
             }
         }
 
+        /// <summary>
+        /// Property Angezeigter Kontent im MainWindow
+        /// </summary>
         private object content;
         public object Content
         {
@@ -148,7 +178,14 @@ namespace SkiServiceApp.ModelView
                 OnPropertyChanged(nameof(Content));
             }
         }
+        #endregion
 
+
+        #region CRUD Registrationen
+
+        /// <summary>
+        /// Get Verbindung mit API Prüfen und Anzeigen der Resultate
+        /// </summary>
         public async void Aktu()
         {
             try
@@ -171,6 +208,9 @@ namespace SkiServiceApp.ModelView
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
+        /// <summary>
+        /// Anzeige der View, um eine neue Registration zu erstellen
+        /// </summary>
         public void Neu()
         {
             try
@@ -184,6 +224,9 @@ namespace SkiServiceApp.ModelView
             catch(Exception ex) { MessageBox.Show(ex.Message); }            
         }
 
+        /// <summary>
+        /// Post Verbindung zu der API und setzen des Abholdatums. Anzeige nach Erfolgreicher Bestellung
+        /// </summary>
         private void NeuEr()
         {
             try
@@ -208,16 +251,15 @@ namespace SkiServiceApp.ModelView
                 Content = erfolgreich;
                 Status.Statuse = "Erfolgreich erstellt!";
                 abhol = reg.Pickup_Date.ToString().Substring(0,10);
-                reg = new Registrationen();
-
-
-                
-                
+                reg = new Registrationen();           
             }
             catch(Exception ex) { MessageBox.Show(ex.Message); }
-
         }
 
+        /// <summary>
+        /// Anzeige der View, um ein Datansatz zu bearbeiten, falls nichts Ausgewählt ist lade alle Registrationen
+        /// </summary>
+        /// <param name="reg"></param>
         private void Aendern(Registrationen reg)
         {
             try
@@ -231,13 +273,14 @@ namespace SkiServiceApp.ModelView
                     AendernView neu = new AendernView();
                     Content = neu;
                 }
-
-
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
-
         }
 
+        /// <summary>
+        /// Überprüfung ob man eingelogt ist
+        /// </summary>
+        /// <returns></returns>
         private bool CanAendern()
         {
             try
@@ -251,6 +294,10 @@ namespace SkiServiceApp.ModelView
             catch (Exception ex) { MessageBox.Show(ex.Message); return false; }
         }
 
+        /// <summary>
+        /// Anzeige der View, um einen Datensatz zu löschen
+        /// </summary>
+        /// <param name="reg"></param>
         private void Loeschen(Registrationen reg)
         {
             try
@@ -264,12 +311,14 @@ namespace SkiServiceApp.ModelView
                 {
                     Aktu();
                 }
-
-
             }
             catch (Exception ex) { MessageBox.Show(ex.Message);}
         }
 
+        /// <summary>
+        /// Put Verbindung zu der API, nach erfolgreichem ändern werden alle Datensätze neu geladen
+        /// </summary>
+        /// <param name="reg"></param>
         public async void AendernSpeicher(Registrationen reg)
         {
             try
@@ -283,6 +332,10 @@ namespace SkiServiceApp.ModelView
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
+        /// <summary>
+        /// Prüfen ob eine Änderung gemacht werden darf
+        /// </summary>
+        /// <returns></returns>
         public bool CanAendernSpeichern()
         {         
             try
@@ -299,10 +352,11 @@ namespace SkiServiceApp.ModelView
             catch (Exception ex) { MessageBox.Show(ex.Message); return false; }
         }
 
+        /// <summary>
+        /// Dalete Verbindung zu der API, nach erfolgreichem Löschen werden alle Datensätze neu geladen
+        /// </summary>
         private async void LoeschenSpeicher()
-        {
-            
-
+        {       
             try
             {
                 Database.Database.Delete(_regi);
@@ -313,10 +367,14 @@ namespace SkiServiceApp.ModelView
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
+        #endregion
 
+        #region Mitarbeiter Anmeldung
+        /// <summary>
+        /// Falls ausgelogt, wird die Loging View geladen, ansonsten wird man ausgelogt
+        /// </summary>
         public async void Anmelden()
-        {           
-
+        {        
             try
             {
                 if (Anmeld.Status == "Anmelden")
@@ -333,9 +391,11 @@ namespace SkiServiceApp.ModelView
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
-
         }
        
+        /// <summary>
+        /// Post Verbinbdung zu der API, Ausgabe der API Antwort in der Statusbar
+        /// </summary>
         public async void AnmeldenSenden()
         {       
             try
@@ -376,11 +436,56 @@ namespace SkiServiceApp.ModelView
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
+        /// <summary>
+        /// Überprüft ob alle Felder ausgefüllt sind
+        /// </summary>
+        /// <returns></returns>
         public bool CanAnmeldenSenden()
         {
             if (login.pwb.Password != string.Empty && _user.Name != string.Empty) { return true; } else { return false; }
         }
+        
+        /// <summary>
+        /// Anzeige der View, um ein User zu deblockieren
+        /// </summary>
+        private async void Deblock()
+        {
+            DeblockView deblockenView = new DeblockView();
+            Content = deblockenView;
+        }
 
+        /// <summary>
+        /// Put Verbindung zu der API, um einen Mitarbeiter zu entblocken, API Antwort in der Statusbar
+        /// </summary>
+        private async void DeblockSenden()
+        {            
+            await (  answerT = Database.Database.PutMember(deblock));
+            string answer = answerT.Result.ToString();
+            if (answer == "Mitarbeiter wurde wieder freigegeben")
+            {
+                Aktu();
+                await Task.Delay(100);
+                Status.Statuse = answer;
+            }
+            else{ Deblock(); Status.Statuse = answer; }
+            Status.Statuse = answer;            
+        }
+
+        /// <summary>
+        /// Überprüft, ob eine Mitarbeiter Id eingegeben wurde.
+        /// </summary>
+        /// <returns></returns>
+        private bool CanDeblockSenden()
+        {
+            return deblock != null;
+        }
+
+        #endregion
+        #region Suche
+
+        /// <summary>
+        /// Get Verbindung zu der API, Antwort nach Suchbegriff durchsuchen und alle passenden Registrationen im MainWindow anzeigen.
+        /// </summary>
         private async void Suche()
         {
             try
@@ -408,33 +513,12 @@ namespace SkiServiceApp.ModelView
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
+        #endregion
+        #region API-Link
 
-        private async void Deblock()
-        {
-            DeblockView deblockenView = new DeblockView();
-            Content = deblockenView;
-        }
-        private async void DeblockSenden()
-        {
-            
-            await (  answerT = Database.Database.PutMember(deblock));
-            string answer = answerT.Result.ToString();
-            if (answer == "Mitarbeiter wurde wieder freigegeben")
-            {
-                Aktu();
-                await Task.Delay(100);
-                Status.Statuse = answer;
-            }
-            else{ Deblock(); Status.Statuse = answer; }
-            Status.Statuse = answer;
-            
-        }
-
-        private bool CanDeblockSenden()
-        {
-            return deblock != null;
-        }
-
+        /// <summary>
+        /// Anzeige der View, um den API-Link zu ändern
+        /// </summary>
         private async void Api()
         {
             Apis.Api = Settings.Default.REST_URL;
@@ -442,6 +526,9 @@ namespace SkiServiceApp.ModelView
             Content = aPILinkView;
         }
 
+        /// <summary>
+        /// Neuer API-Link in Settings speichern
+        /// </summary>
         private async void ApiSenden()
         {
             Settings.Default.REST_URL = Apis.Api.ToString();
@@ -449,10 +536,16 @@ namespace SkiServiceApp.ModelView
             Status.Statuse = "Api-Link erfolgreich gespeichert";
             Content = home;
         }
+
+        /// <summary>
+        /// Überprüfen ob eingelogt und kein lehres Feld.
+        /// </summary>
+        /// <returns></returns>
         private bool CanApiSenden()
         {
             return Apis.Api != null && Apis.Api != "" && isloging;
         }
+        #endregion
     }
 }
 
