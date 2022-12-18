@@ -7,15 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <GroupBox  Header="API-Link" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center" Height="300" Width="450">
+        <GroupBox  Header="API-Link" FontSize="26" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Height="350" Width="550">
             <Grid>
                 <StackPanel Orientation="Vertical">
                     <Label Content="Link eintragen"  FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,30,0,0"></Label>
                     <TextBox x:Name="un" Height="35" HorizontalAlignment="Stretch" Margin="5,0,10,0" VerticalContentAlignment="Center" FontSize="16" Text="{Binding Apis.Api , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 </StackPanel>
                 <DockPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" >
-                    <Button Content="_Abbrechen" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdAktu}" IsCancel="True"></Button>
                     <Button Content="_Speichern" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdApiSenden}" IsDefault="True"></Button>
+                    <Button Content="_Abbrechen" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdAktu}" IsCancel="True"></Button>
+                    
                 </DockPanel>
             </Grid>
         </GroupBox>

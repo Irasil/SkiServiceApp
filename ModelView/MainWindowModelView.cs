@@ -31,8 +31,11 @@ namespace SkiServiceApp.ModelView
         /// </summary>
          
         #region Command Properties
+
         public RelayCommand CmdAktu { get; set; }
         public RelayCommand CmdNeu { get; set; }
+
+
         public RelayCommand CmdNeuEr { get; set; }
         public RelayCommand CmdAendern { get; set; }
         public RelayCommand CmdLoeschen { get; set; }
@@ -73,12 +76,18 @@ namespace SkiServiceApp.ModelView
         /// </summary>
         public MainWindowModelView()
         {
+            CmdAktu = new RelayCommand(param => Aktu());
+            CmdNeu = new RelayCommand(param => Neu());
+
+
             Content = home;          
            
             Registrationens = new ObservableCollection<Registrationen>();
             
             CmdAktu = new RelayCommand(param => Aktu());
             CmdNeu = new RelayCommand(param => Neu());
+
+
             CmdNeuEr = new RelayCommand(param => NeuEr(), param => CanAendernSpeichern());
             CmdAendern = new RelayCommand(param => Aendern() , param => CanAendern());
             CmdLoeschen = new RelayCommand(param => Loeschen(), param => CanAendern());

@@ -17,8 +17,9 @@
                     <PasswordBox x:Name="pwb" Height="35" HorizontalAlignment="Stretch" Margin="0,0,10,0" VerticalContentAlignment="Center" FontSize="20" MaxLength="25" PasswordChar="*"></PasswordBox>
                 </StackPanel>
                 <DockPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+                    <Button Content="_Anmelden" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdAnmeldenSenden}" IsDefault="True"></Button>
                     <Button Content="_Abbrechen" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdAktu}" IsDefault="True"></Button>
-                    <Button Content="_Anmelden" FontSize="16" Margin="10" Padding="20,2,20,2" Command="{Binding CmdAnmeldenSenden}" IsDefault="True"></Button>                    
+                                     
                 </DockPanel>
            </Grid>    
         </GroupBox>

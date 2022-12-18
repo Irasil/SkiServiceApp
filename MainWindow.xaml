@@ -24,11 +24,10 @@
             <RowDefinition Height="25"></RowDefinition>
             
         </Grid.RowDefinitions>
-
         <Menu Grid.Row="0" Background="#FF7BB7EC">
             <MenuItem Header="_Optionen" Margin="10,0,0,0" >
-                <MenuItem Header="API-Link" Command="{Binding CmdApi}"></MenuItem>
-                <MenuItem Header="User deblockieren" Command="{Binding CmdDeblock}"></MenuItem>
+                <MenuItem Header="_API-Link" Command="{Binding CmdApi}"></MenuItem>
+                <MenuItem Header="_User entsperren" Command="{Binding CmdDeblock}"></MenuItem>
             </MenuItem>
         </Menu>
         <ToolBarTray   Grid.Row="1" VerticalAlignment="Top" Margin="8,0,0,0">
@@ -73,9 +72,7 @@
             </ToolBar>
            
         </ToolBarTray>
-        <Image Grid.Row="1" Source="/Images/lolo.png" Margin="55,5,0,0" Height="30"></Image>
-
-
+        <Image Grid.Row="1" Source="/Images/lolo.png" Margin="0,5,0,0" Height="30" ></Image>
         <ToolBar Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" ToolBarTray.IsLocked="True" ToolBar.OverflowMode="Never" Loaded="ToolBar_Loaded" Margin="0,0,8,0">
             <ToolBar.Background>
                 <SolidColorBrush Color="#FF7BB7EC"></SolidColorBrush>
@@ -91,11 +88,10 @@
             <Button x:Name="anmelden"  Padding="15,2,15,2" Command="{Binding CmdAnmelden}">
                 <StackPanel Orientation="Vertical">
                     <Image Width="35" Source="\Images\005-password.png"  Stretch="Uniform"/>
-                    <TextBlock Text="{Binding Anmeld.Status, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                    <TextBlock Margin="0,5"  VerticalAlignment="Bottom" Text="{Binding Anmeld.Status, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                 </StackPanel>
             </Button>            
-        </ToolBar>
-        
+        </ToolBar>        
             <ContentControl x:Name="con" Grid.Row="2" Margin="10,5,10,10">
             <ScrollViewer Style="{DynamicResource ScrollViewerStyle1}">
                 <ScrollViewer.Background>
@@ -112,7 +108,9 @@
                 </ScrollViewer.Foreground>
 
                 <Border  BorderBrush="Black" BorderThickness="1" >
+                    
                 <ContentControl x:Name="content1" Content="{Binding Content}"></ContentControl>
+                    
             </Border>
         </ScrollViewer>
         </ContentControl>
@@ -123,7 +121,5 @@
                            Text="{Binding Status.Statuse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
             </StatusBarItem>
         </StatusBar>
-
-
     </Grid>
 </Window>
