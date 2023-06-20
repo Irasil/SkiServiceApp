@@ -15,14 +15,15 @@ namespace SkiServiceApp.Model
     {
         public int Id { get; set; }
         public string _name;
-        public string Namen
+
+        public string Name
         {
             get { return _name; }
             set
             {
                 _name = value;
                 SetProperty<string>(ref _name, value);
-                OnPropertyChanged(nameof(Namen));
+                OnPropertyChanged(nameof(Name));
             }
         }
 

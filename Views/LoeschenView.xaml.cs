@@ -24,5 +24,10 @@ namespace SkiServiceApp.Views
         {
             InitializeComponent();
         }
+
+        private void btnSpeichern_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

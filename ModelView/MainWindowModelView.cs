@@ -335,7 +335,7 @@ namespace SkiServiceApp.ModelView
             try
             {
                 Database.Database.Put(reg);
-                await Task.Delay(100);
+                await Task.Delay(200);
                 Aktu();
                 await Task.Delay(100);
                 Status.Statuse = "Erfolgreich aktualisiert!";
@@ -417,7 +417,7 @@ namespace SkiServiceApp.ModelView
                 await (suc = Database.Database.Login(_user));
                 if (suc != null)
                 {
-                    User.Namen = string.Empty;
+                    User.Name = string.Empty;
                     string success = suc.Result;
                     if (success == "User ist blockiert")
                     {
@@ -444,7 +444,7 @@ namespace SkiServiceApp.ModelView
                 {
                     Aktu();
                 }
-                User.Namen = string.Empty;
+                User.Name = string.Empty;
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
@@ -455,7 +455,7 @@ namespace SkiServiceApp.ModelView
         /// <returns></returns>
         public bool CanAnmeldenSenden()
         {
-            if (login.pwb.Password != string.Empty && User.Namen != string.Empty) 
+            if (login.pwb.Password != string.Empty && User.Name != string.Empty) 
             { return true; } 
             else { return false; }
         }
@@ -511,12 +511,12 @@ namespace SkiServiceApp.ModelView
                 List<Registrationen> Registries = new List<Registrationen>();
                 Registries = registrations.ToList();
 
-                if (_user.Namen != null)
+                if (_user.Name != null)
                 {
                     Registries.Clear();
                     foreach (Registrationen anim in registrations)
                     {
-                        if (anim.Name.Contains(_user.Namen) || anim.Email.Contains(_user.Namen) || anim.Service.Contains(_user.Namen) || anim.Priority.Contains(_user.Namen) || anim.Status.Contains(_user.Namen))
+                        if (anim.Name.Contains(_user.Name) || anim.Email.Contains(_user.Name) || anim.Service.Contains(_user.Name) || anim.Priority.Contains(_user.Name) || anim.Status.Contains(_user.Name))
                         {
                             Registries.Add(anim);
                         }
